@@ -49,7 +49,7 @@ if [ "${IMAGE_VERSION}" != "${INSTALLED_VERSION}" ]; then
     mkdir -p "${CS_PATH}"
 
     # Sync static directories (overwrite on upgrade, skip nothing)
-    for dir in resources custom_components images medias commands texts lib; do
+    for dir in resources custom_components images medias commands lib; do
         if [ -d "${IMAGE_DIR}/${dir}" ]; then
             bashio::log.info "  Syncing ${dir}/..."
             mkdir -p "${CS_PATH}/${dir}"
@@ -98,6 +98,7 @@ fi
 # ---------------------------------------------------------------------------
 export CASASMOOTH_PATH="${CS_PATH}"
 export CS_APP_DATA="${IMAGE_DIR}/app/data"
+export CS_TEXTS="${IMAGE_DIR}/texts"
 export PYTHONPATH="${IMAGE_DIR}"
 export LOG_LEVEL="${LOG_LEVEL}"
 
