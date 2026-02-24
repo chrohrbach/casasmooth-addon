@@ -120,6 +120,18 @@ export LOG_LEVEL="${LOG_LEVEL}"
 bashio::log.info "SUPERVISOR_TOKEN: $([ -n "${SUPERVISOR_TOKEN}" ] && echo 'Available' || echo 'NOT available – API calls will fail')"
 
 # ---------------------------------------------------------------------------
+# Run cs_update (first boot OR every boot)
+# On first boot this generates all YAML, copies resources → /config/www/,
+# copies custom_components, writes configuration.yaml includes, etc.
+# On subsequent boots it is a fast no-op if nothing changed.
+# ---------------------------------------------------------------------------
+bashio::log.info "Running casasmooth update (cs_update)..."
+python3 -m app.commands.cs_update \
+    --log --verbose \
+    && bashio::log.info "cs_update completed successfully." \
+    || bashio::log.warning "cs_update finished with warnings – check logs."
+
+# ---------------------------------------------------------------------------
 # Start MCP server in background
 # ---------------------------------------------------------------------------
 bashio::log.info "Starting MCP server on port ${MCP_PORT}..."
