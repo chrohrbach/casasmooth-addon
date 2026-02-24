@@ -51,7 +51,7 @@ ingress_stream: false
 # Panel integration
 panel_icon: "mdi:home-automation"
 panel_title: "casasmooth"
-webui: "http://[HOST]:[PORT:8123]/cs-home/home"
+webui: "http://[HOST]:8123/cs-home/home"
 
 # Environment
 environment:
