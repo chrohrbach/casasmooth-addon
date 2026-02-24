@@ -50,7 +50,7 @@ if [ "${IMAGE_VERSION}" != "${INSTALLED_VERSION}" ]; then
     mkdir -p "${CS_PATH}"
 
     # Sync static directories (overwrite on upgrade, skip nothing)
-    for dir in resources custom_components images medias commands texts templates lib; do
+    for dir in resources custom_components images medias commands texts lib; do
         if [ -d "${IMAGE_DIR}/${dir}" ]; then
             bashio::log.info "  Syncing ${dir}/..."
             mkdir -p "${CS_PATH}/${dir}"
@@ -78,6 +78,9 @@ mkdir -p "${CS_DATA}"
 
 for f in "${IMAGE_DIR}/app/data/"*; do
     fname="$(basename "$f")"
+    # .cs_secrets.yaml is app-controlled and stays inside the container image.
+    # Never expose it to the host filesystem.
+    [ "${fname}" = ".cs_secrets.yaml" ] && continue
     target="${CS_DATA}/${fname}"
     if [ ! -f "${target}" ]; then
         bashio::log.info "Initialising data file: ${fname}"
@@ -114,6 +117,7 @@ fi
 # ---------------------------------------------------------------------------
 export CASASMOOTH_PATH="${CS_PATH}"
 export CS_APP_DATA="${CS_DATA}"
+export CS_SECRETS_FILE="${IMAGE_DIR}/app/data/.cs_secrets.yaml"
 export PYTHONPATH="${IMAGE_DIR}"
 export LOG_LEVEL="${LOG_LEVEL}"
 
