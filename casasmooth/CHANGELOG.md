@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.3 – 2026-02-24
+
+### Fixed
+- `is_hass_environment()` now detects addon container via `SUPERVISOR_TOKEN` (not just `ha` CLI presence) – Home Assistant core restart was silently skipped on every update cycle
+- `restart_hass_core()` uses Supervisor REST API when running inside container (`ha core restart` not available)
+- Whisper and Piper addon install/status checks use Supervisor REST API inside container (same root cause)
+- Dev addon installation step removed from production update flow
+- `cs-cameras` dashboard no longer generated when no cameras or Frigate cameras are configured
+
+---
+
 ## 2.0.2 – 2026-02-24
 
 ### Security / Cleanup
