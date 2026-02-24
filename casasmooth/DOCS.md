@@ -45,16 +45,19 @@ After installation the following directories are created under `/config/casasmoo
 
 | Path | Purpose |
 |---|---|
-| `data/` | Writable config & secrets (`*.csv`, `*.yaml`, `.cs_secrets.yaml`) |
 | `resources/` | Lovelace custom cards (copied to `/config/www/community/resources/`) |
 | `custom_components/` | HA custom integrations (copied to `/config/custom_components/`) |
 | `commands/` | Shell scripts used by `shell_command:` automations |
-| `lib/` | Shared bash libraries and configuration templates |
-| `texts/` | Notification & e-mail templates (multi-language) |
-| `templates/` | YAML generation templates |
-| `locals/` | Generated YAML (prod/), staging (last/) and backups (back/) |
+| `lib/` | Shared bash libraries |
+| `images/` | Static images (`cs_logo.png`) |
+| `medias/` | Camera snapshots and media files |
+| `locals/` | Generated YAML (`prod/`), staging (`last/`), backups (`back/`) |
 | `cache/` | Performance caches (resource manifest, etc.) |
 | `logs/` | Application logs |
+| `www/` | Web assets served by Home Assistant (`/local/`) |
+
+> **Note:** Application data (`app/data/`) and multi-language text templates are bundled
+> inside the container image and are not exposed on the host filesystem.
 
 ---
 
@@ -86,7 +89,6 @@ The add-on image is versioned. When a new image is available, HA will notify you
 the add-on store. After updating the add-on:
 
 - Static files (resources, commands, etc.) are synchronised automatically.
-- User data (`data/.cs_secrets.yaml`, `locals/`, etc.) is **never overwritten**.
 
 ---
 
@@ -102,7 +104,6 @@ Install it manually:
 
 ### API not responding
 Check the add-on log for Python stack traces. Common causes:
-- Missing API keys in `data/.cs_secrets.yaml`
 - Port `28100` in use by another service (change `api_port` in options)
 
 ---
