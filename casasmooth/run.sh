@@ -22,7 +22,6 @@ LOG_LEVEL=$(bashio::config 'log_level')
 # ---------------------------------------------------------------------------
 IMAGE_DIR="/opt/casasmooth"
 CS_PATH="/config/casasmooth"
-CS_DATA="${CS_PATH}/data"
 MCP_PORT=8003
 
 # ---------------------------------------------------------------------------
@@ -71,24 +70,6 @@ if [ "${IMAGE_VERSION}" != "${INSTALLED_VERSION}" ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Writable app data (secrets, themes, rules) – copy template files once
-# Existing user files (e.g. .cs_secrets.yaml filled with API keys) are preserved.
-# ---------------------------------------------------------------------------
-mkdir -p "${CS_DATA}"
-
-for f in "${IMAGE_DIR}/app/data/"*; do
-    fname="$(basename "$f")"
-    # .cs_secrets.yaml is app-controlled and stays inside the container image.
-    # Never expose it to the host filesystem.
-    [ "${fname}" = ".cs_secrets.yaml" ] && continue
-    target="${CS_DATA}/${fname}"
-    if [ ! -f "${target}" ]; then
-        bashio::log.info "Initialising data file: ${fname}"
-        cp "${f}" "${target}"
-    fi
-done
-
-# ---------------------------------------------------------------------------
 # Install required Home Assistant add-ons (once per machine)
 # ---------------------------------------------------------------------------
 DEPS_STAMP="${CS_PATH}/.deps_installed"
@@ -116,8 +97,7 @@ fi
 # Export environment
 # ---------------------------------------------------------------------------
 export CASASMOOTH_PATH="${CS_PATH}"
-export CS_APP_DATA="${CS_DATA}"
-export CS_SECRETS_FILE="${IMAGE_DIR}/app/data/.cs_secrets.yaml"
+export CS_APP_DATA="${IMAGE_DIR}/app/data"
 export PYTHONPATH="${IMAGE_DIR}"
 export LOG_LEVEL="${LOG_LEVEL}"
 
