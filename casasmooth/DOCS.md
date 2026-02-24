@@ -39,19 +39,6 @@ The add-on exposes the following options:
 
 ---
 
-## API Keys & Secrets
-
-After the first start, edit the secrets file at:
-
-```
-/config/casasmooth/data/.cs_secrets.yaml
-```
-
-Fill in your API keys (OpenAI, GEMINI, Twilio, etc.).  
-Changes take effect after the next casasmooth update cycle (or an add-on restart).
-
----
-
 ## Folder Structure
 
 After installation the following directories are created under `/config/casasmooth/`:
