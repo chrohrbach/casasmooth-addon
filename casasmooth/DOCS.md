@@ -22,9 +22,9 @@ and is ready to use immediately after installation.
 3. Start the add-on. On first boot it will:
    - Copy all resource files to `/config/casasmooth/`
    - Install **Mosquitto broker** and **OpenSSH** if not already present
-   - Initialise the writable data directory at `/config/casasmooth/data/`
+   - Generate casasmooth YAML/configuration files under `/config/casasmooth/locals/`
 
-4. Open the add-on web UI or browse to `http://homeassistant.local:28100/`.
+4. Open the add-on web UI to access the API docs, or browse to `http://homeassistant.local:28100/docs`.
 
 ---
 
@@ -59,6 +59,8 @@ After installation the following directories are created under `/config/casasmoo
 > **Note:** Application data (`app/data/`) and multi-language text templates are bundled
 > inside the container image and are not exposed on the host filesystem.
 
+If dependency installation fails on first boot, the add-on will retry on the next start.
+
 ---
 
 ## Ports
@@ -77,9 +79,6 @@ The **OpenSSH** add-on is installed automatically. To enable key-based SSH acces
 1. Open **Settings → Add-ons → OpenSSH → Configuration**.
 2. Add your public key under `authorized_keys`.
 3. Start the add-on.
-
-The SSH deploy key for developer access is stored at  
-`/config/casasmooth/lib/casasmooth-deploy.pub` (if copied from the build).
 
 ---
 

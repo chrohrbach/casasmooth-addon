@@ -4,9 +4,9 @@
 #
 # Boot sequence:
 #   1. On first install or version upgrade: sync static files → /config/casasmooth/
-#      (Python code is NEVER copied out – it stays protected in the image)
-#   2. Copy app/data template files to /config/casasmooth/data/ (writable, persistent)
-#   3. Run install_deps.sh once to install required HA addons
+#      (Python code + app/data stay inside the image – never copied out)
+#   2. Run install_deps.sh once to install Mosquitto + OpenSSH
+#   3. Run cs_update to generate YAML / install HA files
 #   4. Start MCP server in background, API server in foreground
 
 set -e
@@ -66,6 +66,8 @@ if [ "${IMAGE_VERSION}" != "${INSTALLED_VERSION}" ]; then
 
     # Stamp installed version
     echo "${IMAGE_VERSION}" > "${CS_PATH}/.addon_version"
+    # Clear addon restart marker so cs_update will restart once for the new version
+    rm -f "${CS_PATH}/cache/cs_addon_restart_done.txt"
     bashio::log.info "Files synced to ${CS_PATH}"
 fi
 
@@ -129,7 +131,7 @@ bashio::log.info "MCP server started (PID: ${MCP_PID})"
 # ---------------------------------------------------------------------------
 bashio::log.info "Starting casasmooth API server on port ${API_PORT}..."
 bashio::log.info "=========================================="
-exec python3 -m app.api.server \
+exec python3 -m app.api \
     --host 0.0.0.0 \
     --port "${API_PORT}" \
     --log-level "${LOG_LEVEL}"

@@ -51,14 +51,14 @@ ingress_stream: false
 # Panel integration
 panel_icon: "mdi:home-automation"
 panel_title: "casasmooth"
-webui: "http://[HOST]:[PORT:28100]/cs-home/home"
+webui: "http://[HOST]:[PORT:28100]/docs"
 
 # Environment
 environment:
   CASASMOOTH_MODE: "production"
   PYTHONUNBUFFERED: "1"
   PYTHONPATH: "/opt/casasmooth"
-  CS_APP_DATA: "/config/casasmooth/data"
+  CS_APP_DATA: "/opt/casasmooth/app/data"
 
 # User-configurable options
 options:
