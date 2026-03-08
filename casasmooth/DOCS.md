@@ -91,6 +91,28 @@ the add-on store. After updating the add-on:
 
 ---
 
+## Uninstall
+
+Before uninstalling the add-on, run the casasmooth cleanup command first:
+
+```bash
+python3 -m app.cli.cs_main cleanup uninstall
+```
+
+This cleanup step removes casasmooth-managed traces before the add-on is removed:
+
+- Removes the casasmooth block from `/config/configuration.yaml`
+- Resets the default dashboard if a casasmooth dashboard is active
+- Clears `cs_*` labels
+- Removes casasmooth runtime artifacts generated on the Home Assistant host
+
+After that, uninstall the add-on normally from Home Assistant.
+
+If you want a full purge of the source tree as well, delete `/config/casasmooth`
+manually after uninstall.
+
+---
+
 ## Troubleshooting
 
 ### "SUPERVISOR_TOKEN not available"
