@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.13 – 2026-03-25
+
+### Added
+- Pre-install 6 additional HA add-ons on first boot: Whisper STT, Piper TTS, File Editor, Samba, DuckDNS, Let's Encrypt
+- Add-on icons (icon.png, logo.png) for HA add-on store
+
+### Changed
+- Documentation updated to reflect all 8 pre-installed add-ons
+- Boot sequence comments updated
+
+---
+
 ## 2.0.3 – 2026-02-24
 
 ### Fixed

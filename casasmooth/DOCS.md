@@ -21,7 +21,7 @@ and is ready to use immediately after installation.
 
 3. Start the add-on. On first boot it will:
    - Copy all resource files to `/config/casasmooth/`
-   - Install **Mosquitto broker** and **OpenSSH** if not already present
+   - Install required HA add-ons (Mosquitto, OpenSSH, Whisper, Piper, File Editor, Samba, DuckDNS, Let's Encrypt)
    - Generate casasmooth YAML/configuration files under `/config/casasmooth/locals/`
 
 4. Open the add-on web UI to access the API docs, or browse to `http://homeassistant.local:28100/docs`.
@@ -72,9 +72,26 @@ If dependency installation fails on first boot, the add-on will retry on the nex
 
 ---
 
+## Pre-installed Add-ons
+
+The following HA add-ons are installed automatically on first boot:
+
+| Add-on | Auto-started | Notes |
+|---|---|---|
+| **Mosquitto broker** | Yes | MQTT broker for device communication |
+| **OpenSSH** | No | Configure SSH keys before starting |
+| **Whisper** | Yes | Speech-to-Text for voice assistant |
+| **Piper** | Yes | Text-to-Speech for voice assistant |
+| **File Editor** | No | Start manually from the sidebar |
+| **Samba share** | No | Configure credentials before starting |
+| **DuckDNS** | No | Configure domain and token before starting |
+| **Let's Encrypt** | No | Configure domain before starting |
+
+---
+
 ## SSH Access
 
-The **OpenSSH** add-on is installed automatically. To enable key-based SSH access:
+The **OpenSSH** add-on is installed automatically but not started. To enable key-based SSH access:
 
 1. Open **Settings → Add-ons → OpenSSH → Configuration**.
 2. Add your public key under `authorized_keys`.

@@ -15,7 +15,7 @@ The production add-on that:
 - Generates Lovelace dashboards, entity YAML and automations from your device registry
 - Deploys Lovelace custom cards and custom components to Home Assistant
 - Exposes a REST API (port 28100) and a Model Context Protocol server (port 8003)
-- Installs Mosquitto MQTT broker and OpenSSH automatically on first boot
+- Pre-installs 8 HA add-ons on first boot (Mosquitto, SSH, Whisper, Piper, File Editor, Samba, DuckDNS, Let's Encrypt)
 - Runs from a **pre-built Docker image** – source code is compiled to bytecode for protection
 
 ## Installation

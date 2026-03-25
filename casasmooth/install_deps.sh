@@ -7,8 +7,14 @@
 # Requires SUPERVISOR_TOKEN (injected automatically when hassio_api: true).
 #
 # Add-ons installed:
-#   - core_mosquitto  (MQTT broker – required for device communication)
-#   - core_ssh        (SSH terminal  – required for remote management)
+#   - core_mosquitto     (MQTT broker – required for device communication)
+#   - core_ssh           (SSH terminal – required for remote management)
+#   - core_whisper       (Speech-to-Text – voice assistant)
+#   - core_piper         (Text-to-Speech – voice assistant)
+#   - core_configurator  (File editor – HA config editing)
+#   - core_samba         (Samba share – network file access)
+#   - core_duckdns       (DuckDNS – dynamic DNS)
+#   - core_letsencrypt   (Let's Encrypt – SSL certificates)
 
 set -e
 
@@ -142,7 +148,7 @@ log "Starting dependency installation..."
 # 1. Mosquitto MQTT Broker
 # ---------------------------------------------------------------------------
 install_addon "core_mosquitto" "Mosquitto broker"
-start_addon "core_mosquitto" "Mosquitto broker"
+start_addon  "core_mosquitto" "Mosquitto broker"
 
 # ---------------------------------------------------------------------------
 # 2. OpenSSH
@@ -151,7 +157,43 @@ install_addon "core_ssh" "OpenSSH"
 log "OpenSSH installed – configure SSH keys in the add-on options before starting."
 
 # ---------------------------------------------------------------------------
-# 3. Shared directories
+# 3. Whisper (Speech-to-Text)
+# ---------------------------------------------------------------------------
+install_addon "core_whisper" "Whisper STT"
+start_addon  "core_whisper" "Whisper STT"
+
+# ---------------------------------------------------------------------------
+# 4. Piper (Text-to-Speech)
+# ---------------------------------------------------------------------------
+install_addon "core_piper" "Piper TTS"
+start_addon  "core_piper" "Piper TTS"
+
+# ---------------------------------------------------------------------------
+# 5. File Editor
+# ---------------------------------------------------------------------------
+install_addon "core_configurator" "File editor"
+log "File editor installed – available in the HA sidebar when started."
+
+# ---------------------------------------------------------------------------
+# 6. Samba share
+# ---------------------------------------------------------------------------
+install_addon "core_samba" "Samba share"
+log "Samba installed – configure credentials in the add-on options before starting."
+
+# ---------------------------------------------------------------------------
+# 7. DuckDNS
+# ---------------------------------------------------------------------------
+install_addon "core_duckdns" "DuckDNS"
+log "DuckDNS installed – configure domain and token in the add-on options before starting."
+
+# ---------------------------------------------------------------------------
+# 8. Let's Encrypt
+# ---------------------------------------------------------------------------
+install_addon "core_letsencrypt" "Let's Encrypt"
+log "Let's Encrypt installed – configure domain in the add-on options before starting."
+
+# ---------------------------------------------------------------------------
+# 9. Shared directories
 # ---------------------------------------------------------------------------
 mkdir -p /share/mosquitto
 log_ok "Created /share/mosquitto bridge config directory."

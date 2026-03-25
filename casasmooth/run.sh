@@ -5,7 +5,7 @@
 # Boot sequence:
 #   1. On first install or version upgrade: sync static files → /config/casasmooth/
 #      (Python code + app/data stay inside the image – never copied out)
-#   2. Run install_deps.sh once to install Mosquitto + OpenSSH
+#   2. Run install_deps.sh once to install HA add-ons (Mosquitto, SSH, Whisper, Piper, etc.)
 #   3. Run cs_update to generate YAML / install HA files
 #   4. Start MCP server in background, API server in foreground
 
