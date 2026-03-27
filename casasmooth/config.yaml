@@ -71,6 +71,7 @@ schema:
 
 # Permissions
 hassio_api: true
+hassio_role: manager   # needed to install/start other addons via Supervisor API
 homeassistant_api: true
 auth_api: true
 
