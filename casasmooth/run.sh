@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bashio
 # casasmooth Production Add-on Entry Point
-# Runs compiled Python (.pyc) from /opt/casasmooth – source code stays in the image.
+# This file is baked into the Docker image at /run.sh.
+# It mirrors casasmooth-addon/casasmooth/run.sh – keep them in sync.
 #
 # Boot sequence:
 #   1. On first install or version upgrade: sync static files → /config/casasmooth/
@@ -48,7 +49,7 @@ if [ "${IMAGE_VERSION}" != "${INSTALLED_VERSION}" ]; then
 
     mkdir -p "${CS_PATH}"
 
-    # Sync static directories (overwrite on upgrade, skip nothing)
+    # Sync static directories (overwrite on upgrade)
     for dir in resources custom_components images medias commands lib; do
         if [ -d "${IMAGE_DIR}/${dir}" ]; then
             bashio::log.info "  Syncing ${dir}/..."
@@ -107,7 +108,7 @@ export LOG_LEVEL="${LOG_LEVEL}"
 bashio::log.info "SUPERVISOR_TOKEN: $([ -n "${SUPERVISOR_TOKEN}" ] && echo 'Available' || echo 'NOT available – API calls will fail')"
 
 # ---------------------------------------------------------------------------
-# Run cs_update (first boot OR every boot)
+# Run cs_update (first boot OR version upgrade)
 # On first boot this generates all YAML, copies resources → /config/www/,
 # copies custom_components, writes configuration.yaml includes, etc.
 # On subsequent boots it is a fast no-op if nothing changed.

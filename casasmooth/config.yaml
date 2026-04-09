@@ -3,7 +3,7 @@
 # Source code is compiled to .pyc bytecode for protection
 
 name: "casasmooth"
-version: "2.0.15"
+version: "2.0.18"
 slug: casasmooth
 description: "casasmooth Smart Home System"
 url: "https://github.com/chrohrbach/casasmooth-addon"

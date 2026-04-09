@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.18 - 2026-04-09
+
+### Changed
+- Sync published add-on metadata with casasmooth production image version 2.0.18
+- Align mirrored add-on boot script comments with the production source repository
+
+---
+
 ## 2.0.13 – 2026-03-25
 
 ### Added
