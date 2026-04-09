@@ -1,0 +1,123 @@
+# casasmooth Proprietary License
+
+Effective date: April 9, 2026
+
+This Proprietary License governs the use, installation, access, copying, distribution, and modification of the casasmooth software, including its Home Assistant add-on, Python application, compiled bytecode, scripts, static assets, configuration generators, cloud-connected services, and related documentation (collectively, the "Software").
+
+The Software is proprietary and is licensed, not sold. Purchasing a subscription to casasmooth services does not constitute a purchase of the Software or any intellectual property rights therein. The subscription grants access to cloud-connected services and features that enable the Software's functionality; it does not transfer any ownership of or title to the Software.
+
+## 1. Licensor
+
+The licensor and owner of the Software is:
+
+Teleia SaRL  
+Zwygartenstrasse 55  
+3603 Aeschi bei Spiez  
+Switzerland  
+UID: CHE-480.612.666
+
+The name "casasmooth" is a protected trade name and brand designation of Teleia SaRL.
+
+## 2. Ownership and Reservation of Rights
+
+All rights, title, and interest in and to the Software, including all source code, bytecode, object code, architecture, workflows, models, templates, scripts, user interfaces, documentation, trade names, branding, know-how, and any derivatives thereof, remain exclusively vested in Teleia SaRL and its licensors.
+
+No ownership right, copyright, trademark right, trade secret right, or other intellectual property right is transferred to you under this Proprietary License.
+
+All rights not expressly granted are reserved.
+
+## 3. Limited License Grant
+
+Subject to your compliance with this Proprietary License and any applicable commercial agreement with Teleia SaRL, Teleia SaRL grants you a limited, revocable, non-exclusive, non-transferable, non-sublicensable license to install and use the Software solely for your own internal purposes and only on authorized systems, devices, or customer environments.
+
+This license is limited to the scope expressly permitted by Teleia SaRL. Any use beyond that scope is prohibited unless Teleia SaRL gives prior written consent.
+
+## 3a. Service Subscription Model
+
+Casasmooth operates on a subscription-based service model. Certain features and cloud-connected capabilities of the Software are only available when an active subscription to casasmooth services is held with Teleia SaRL.
+
+Subscribing to casasmooth services:
+
+1. grants access to the cloud services, APIs, and feature tiers included in the subscribed plan;
+2. does **not** constitute a purchase, sale, or transfer of the Software or any part of it;
+3. does **not** grant any intellectual property rights beyond what is expressly stated in this Proprietary License;
+4. is subject to the separate Terms of Service applicable to the subscribed plan.
+
+If a subscription expires or is terminated, access to subscription-gated features and services will cease. The Software itself may continue to operate in a reduced, offline, or base-tier capacity as determined by Teleia SaRL.
+
+## 4. Restrictions
+
+Except to the extent such restriction is prohibited by mandatory applicable law, you shall not, and shall not permit any third party to:
+
+1. copy, reproduce, republish, redistribute, publicly display, or publicly perform the Software, except as expressly authorized;
+2. sell, resell, lease, rent, sublicense, assign, transfer, pledge, timeshare, or otherwise commercially exploit the Software;
+3. modify, adapt, translate, create derivative works from, or merge the Software into other software or services;
+4. reverse engineer, decompile, disassemble, decode, extract, reconstruct, or otherwise attempt to derive the source code, underlying ideas, structure, logic, algorithms, file formats, models, or workflows of the Software;
+5. circumvent or remove any technical, contractual, or operational restrictions, notices, attribution, or proprietary markings;
+6. use the Software to build, support, train, benchmark, or commercialize a competing product or service;
+7. disclose, publish, or make available any non-public part of the Software to any unauthorized person;
+8. use the Software in violation of law, contract, export control requirements, or third-party rights.
+
+## 5. Confidentiality
+
+The Software contains confidential and proprietary information of Teleia SaRL, including implementation details, system design, business logic, integration methods, deployment methods, and operational know-how.
+
+You agree to protect such information with at least reasonable care and not to disclose it to any third party except as expressly authorized in writing by Teleia SaRL.
+
+## 6. Authorized Copies and Backup
+
+You may make only such copies as are strictly necessary for authorized installation, execution, disaster recovery, or backup purposes, provided that all proprietary notices and this Proprietary License are preserved in such copies.
+
+No copy may be used to expand usage beyond the licensed scope.
+
+## 7. Third-Party Components
+
+The Software may include, interact with, or depend on third-party components, libraries, frameworks, or services that are subject to their own license terms.
+
+This Proprietary License applies only to the proprietary portions of casasmooth owned by Teleia SaRL and does not replace or limit rights and obligations arising under third-party licenses.
+
+## 8. No Implied Rights
+
+No implied license, exhaustion, waiver, or other right shall arise from delivery, access, deployment, integration support, or technical disclosure.
+
+Any rights not expressly granted under this Proprietary License are withheld.
+
+## 9. Term and Termination
+
+This Proprietary License remains in effect until terminated.
+
+It terminates automatically and immediately if you breach any provision of this Proprietary License or any applicable agreement with Teleia SaRL.
+
+Upon termination, you must immediately cease all use of the Software and, at Teleia SaRL's request, delete or destroy all copies under your control, except to the extent retention is required by mandatory law.
+
+Sections concerning ownership, restrictions, confidentiality, disclaimers, liability, and enforcement survive termination.
+
+## 10. Disclaimer of Warranties
+
+To the maximum extent permitted by applicable law, the Software is provided "as is" and "as available", without warranties of any kind, whether express, implied, statutory, or otherwise, including any implied warranties of merchantability, fitness for a particular purpose, title, non-infringement, availability, security, or error-free operation.
+
+## 11. Limitation of Liability
+
+To the maximum extent permitted by applicable law, Teleia SaRL shall not be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages, or for any loss of data, revenue, profits, goodwill, anticipated savings, business opportunity, or service interruption, arising out of or related to the Software, even if advised of the possibility of such damages.
+
+To the maximum extent permitted by applicable law, Teleia SaRL's aggregate liability arising out of or relating to the Software shall be limited to the amount paid, if any, for the applicable license or service giving rise to the claim during the twelve months preceding the event giving rise to the claim.
+
+## 12. Governing Law
+
+This Proprietary License shall be governed by the laws of Switzerland, excluding conflict of laws rules, unless mandatory applicable law requires otherwise.
+
+Any dispute arising out of or in connection with this Proprietary License shall be submitted to the competent courts of Switzerland, unless mandatory applicable law requires otherwise.
+
+## 13. Enforcement
+
+You acknowledge that unauthorized use, disclosure, copying, reverse engineering, or distribution of the Software may cause irreparable harm to Teleia SaRL for which monetary damages may be insufficient.
+
+Teleia SaRL reserves the right to seek injunctive relief and any other remedies available under applicable law.
+
+## 14. Entire License
+
+This Proprietary License supplements any commercial agreement between you and Teleia SaRL. If a signed agreement expressly governs the same subject matter, that signed agreement prevails to the extent of a conflict.
+
+If you do not agree to these terms, you must not use, copy, deploy, access, or distribute the Software.
+
+All rights reserved.
