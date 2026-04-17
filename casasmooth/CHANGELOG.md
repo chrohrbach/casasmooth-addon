@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.21 - 2026-04-17
+
+### Changed
+- Sync published add-on metadata with casasmooth production image version 2.0.21
+
+---
+
 ## 2.0.20 - 2026-04-17
 
 ### Added
