@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.20 - 2026-04-17
+
+### Added
+- Remote access token (`cs_remote_token`) for opt-in remote management — written to `cs_states.yaml` via startup automation
+- Nightly housekeeping job (scheduled maintenance)
+- Admin energy billing email button on the Rapports dashboard
+- Air quality and weather report emails
+
+### Changed
+- Manual update flow now uses `--full-restart` by default
+- Rapports dashboard: limited to 3 columns
+- Sync published add-on metadata with casasmooth production image version 2.0.20
+
+---
+
 ## 2.0.18 - 2026-04-09
 
 ### Changed
