@@ -1,6 +1,9 @@
-# casasmooth Production Add-on
-# Runs from a pre-built Docker image (ghcr.io/chrohrbach/casasmooth-{arch})
-# Source code is compiled to .pyc bytecode for protection
+# casasmooth Add-on
+# Runs from a pre-built Docker image (ghcr.io/chrohrbach/casasmooth-{arch}).
+# Default: source code is compiled to .pyc bytecode, runs from /opt/casasmooth.
+# When ``dev_mount`` is enabled, /opt/casasmooth/app is swapped for a symlink
+# to /config/casasmooth/app so developers can edit Python sources over SSH and
+# restart the addon for an instant reload. See docs/operations/deployment.md.
 
 name: "casasmooth"
 version: "2.0.28"
@@ -8,34 +11,22 @@ slug: casasmooth
 description: "casasmooth Smart Home System"
 url: "https://github.com/chrohrbach/casasmooth-addon"
 
-# Architecture support
 arch:
   - amd64
   - aarch64
 
-# Pre-built image (pulled from GitHub Container Registry, not built locally)
-# {arch} is replaced by HA with the machine's architecture
 image: "ghcr.io/chrohrbach/casasmooth-{arch}"
 
-# Container settings
 init: false
 startup: application
 boot: auto
 
-# Mount /config read-write so the addon can:
-# - Write generated YAML to /config/casasmooth/locals/prod/
-# - Copy Lovelace cards to /config/www/community/resources/
-# - Copy custom components to /config/custom_components/
-# - Sync API keys to /config/secrets.yaml
-# - Write configuration.yaml includes
-# Mount media read-write for camera snapshots
 map:
   - config:rw
   - ssl:ro
   - media:rw
   - share:rw
 
-# Network - expose API + MCP ports
 ports:
   28100/tcp: 28100
   8003/tcp: 8003
@@ -43,37 +34,33 @@ ports_description:
   28100/tcp: "casasmooth API Server"
   8003/tcp: "casasmooth MCP Server"
 
-# Ingress (access through HA UI)
 ingress: true
 ingress_port: 28100
 ingress_stream: false
 
-# Panel integration
 panel_icon: "mdi:home-automation"
 panel_title: "casasmooth"
 webui: "http://[HOST]:[PORT:28100]/docs"
 
-# Environment
 environment:
   CASASMOOTH_MODE: "production"
   PYTHONUNBUFFERED: "1"
   PYTHONPATH: "/opt/casasmooth"
   CS_APP_DATA: "/opt/casasmooth/app/data"
 
-# User-configurable options
 options:
   api_port: 28100
   log_level: "info"
+  dev_mount: false
 
 schema:
   api_port: int
   log_level: list(debug|info|warning|error)
+  dev_mount: bool
 
-# Permissions
 hassio_api: true
-hassio_role: manager   # needed to install/start other addons via Supervisor API
+hassio_role: manager
 homeassistant_api: true
 auth_api: true
 
-# Watchdog - auto-restart if API becomes unresponsive
 watchdog: "http://[HOST]:[PORT:28100]/health"
