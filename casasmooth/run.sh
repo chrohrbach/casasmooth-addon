@@ -92,14 +92,30 @@ if [ "${CASASMOOTH_MODE}" = "production" ] && [ "${IMAGE_VERSION}" != "${INSTALL
         bashio::log.info "First install detected – syncing files to ${CS_PATH}..."
     else
         bashio::log.info "Upgrade ${INSTALLED_VERSION} → ${IMAGE_VERSION} – syncing files..."
-        if [ -d "${CS_PATH}/commands" ]; then
-            bashio::log.info "  Removing legacy commands/ directory from ${CS_PATH}..."
-            rm -rf "${CS_PATH}/commands"
-        fi
-        if [ -d "${CS_PATH}/lib" ]; then
-            bashio::log.info "  Removing legacy lib/ directory from ${CS_PATH}..."
-            rm -rf "${CS_PATH}/lib"
-        fi
+        # Remove retired top-level directories from /config/casasmooth/.
+        # This ONLY runs in PROD mode on version upgrade — dev machines keep
+        # their /config/casasmooth/ git working tree untouched. Extend this
+        # list conservatively: only add directories that (a) were previously
+        # part of the addon image and (b) are confirmed no longer referenced
+        # by any code path. Every entry is a retired feature, not a guess.
+        #
+        # Retired:
+        #   commands/  — 2025 legacy bash scripts (replaced by app/commands/)
+        #   lib/       — 2025 legacy bash libraries (replaced by app/core/)
+        #   addon-dev/ — 2026-04 dev addon manifest (replaced by dev_mount option)
+        #   cs_install.sh — 2025 legacy installer (replaced by HA Add-on Store)
+        for legacy in commands lib addon-dev; do
+            if [ -d "${CS_PATH}/${legacy}" ]; then
+                bashio::log.info "  Removing retired ${legacy}/ directory from ${CS_PATH}..."
+                rm -rf "${CS_PATH}/${legacy}"
+            fi
+        done
+        for legacy_file in cs_install.sh cs_update.sh; do
+            if [ -f "${CS_PATH}/${legacy_file}" ]; then
+                bashio::log.info "  Removing retired ${legacy_file} from ${CS_PATH}..."
+                rm -f "${CS_PATH}/${legacy_file}"
+            fi
+        done
     fi
 
     mkdir -p "${CS_PATH}"
