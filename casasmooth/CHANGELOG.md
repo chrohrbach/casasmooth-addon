@@ -1,5 +1,80 @@
 # Changelog
 
+## 2.0.31 - 2026-04-21
+
+### Fixed
+- Boot no longer stalls on LLM regeneration when the instance UI bundle
+  cache is invalidated by an upgrade. The `Instance UI docs` step has
+  been moved out of the `cs_update` critical path into a background
+  task that runs 60 s after the API server starts listening (and daily
+  at 03:15 thereafter). First boot is now fast; the localised user
+  guides land a few minutes later without tripping the HA watchdog and
+  without triggering the restart loop that was observed on 2.0.30.
+
+---
+
+## 2.0.30 - 2026-04-20
+
+### Added
+- `product_shops` catalog (admin CRUD + per-language filtering) with
+  URL templates using the `{product_name}` placeholder, replacing the
+  per-product `specifications.online_shops` free-form JSON.
+- Dedicated `crm-portal` container for `/crm/*` admin routes — the
+  public website container no longer serves admin UI.
+- `linked_systems` is now included in the `/api/auth/login`,
+  `/api/auth/refresh`, `/api/auth/me` and MFA-verify responses so the
+  tarifs page renders linked systems + plans immediately after login
+  instead of depending on a subsequent `/api/auth/me` refresh.
+- Stripe cancellation on system deletion: admin-initiated system
+  removal now cancels every attached Stripe subscription / addon item
+  before dropping the DB rows. No more orphan Stripe subscriptions
+  after a cleanup.
+- Support for `dev_mount` addon option to run from an editable
+  `/config/casasmooth/app` tree instead of the baked image.
+
+### Fixed
+- Subscription entitlement cache consolidated into a single
+  `locals/cs_services.json` file (was split between
+  `locals/cs_services.txt` and `cache/services.json`, which drifted
+  out of sync — the plain-text file was only ever written on first
+  install, never refreshed). Legacy `cs_services.txt` is migrated
+  transparently on first read and then removed.
+- `/api/services` and `/api/admin/systems` now include trial-mode
+  subscriptions (`status IN ('active','trial')`). Trial plans were
+  previously invisible to the services resolver and to the admin
+  systems list — a Premium trial system rendered as "No Plan" and
+  received an empty service list.
+- Fallback path when no subscription is active no longer tries to look
+  up a non-existent `standard_base` *subscription* row; it now resolves
+  to the Freemium plan (+ `standard_base` service) as intended.
+- Ownership transfer flow rejects placeholder / malformed new-owner
+  emails (e.g. the literal string `"unknown"` that some HA instances
+  report before the owner sets a real address). No transfer row or
+  email is created when the heartbeat reports a value without `@` and
+  a dotted domain.
+- System deletion cascade now covers `ClientServiceAddon` rows and the
+  FK-cascaded tables (heartbeats, backups, bridging config).
+- Ops-portal `DELETE /systems/<guid>/assignments/<kind>/<int:aid>`
+  route no longer 500s — the function signature was missing the `aid`
+  kwarg.
+- Ops-portal Plans & Services editor: the "Actuellement actif" list no
+  longer overlaps the editor below; items are now rendered as flex
+  cards with a visible separator above "Modifier l'assignation".
+  "revoke" renamed to "Révoquer".
+- Assignment recap email is skipped (with a warning) when the system
+  has a placeholder email, instead of letting Graph/Resend reject the
+  whole batch.
+
+### Infrastructure
+- Nginx routes `/api/ownership/*` to cloud-api on all three server
+  blocks (HTTP, HTTPS-FQDN, HTTPS-casasmooth.com) so claim / revert
+  email links actually reach the FastAPI router. Previously
+  `https://casasmooth.com/api/ownership/transfer/revert?token=…` fell
+  through to the website container and returned a Flask 404.
+- Cloud-api + operations-portal rebuilt with the above changes.
+
+---
+
 ## 2.0.21 - 2026-04-17
 
 ### Changed
