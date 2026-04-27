@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.32 - 2026-04-27
+
+### Fixed
+- Area lighting auto-off no longer skips when a user scene (1-4) is
+  active. The off automation's "scene guard" now only blocks when an
+  animation script (scenes 5-10) is running — animations control the
+  lights and must not be interrupted, but static user scenes are
+  meant to be released by the lighting timer like any other state.
+  Previously, any non-zero scene blocked the timer.finished handler,
+  so a single motion event during a period whose default scene was
+  1-4 would leave lights on indefinitely.
+- TV-scene-off no longer leaves the room dark for several seconds
+  when a media player stops:
+  - the unconditional `homeassistant.turn_off` of all area lights
+    has been removed (it was the source of the visible blackout);
+  - the area's animation scripts (5-10) are now stopped explicitly
+    before handing control back to the regular lighting automation;
+  - `cs_<area>_lighting_scene` is force-refreshed from the period
+    config via an immediate trigger of
+    `cs_parameters_<area>_update_current_values`, so the next
+    enhanced/standard trigger sees the right scene number instead
+    of the placeholder `0` and presses the matching restore_scene
+    button (otherwise the room could stay dark up to 60 s, until
+    the next minute-cycle of update_current_values);
+  - the inter-step delay shrinks from 1 s to 200 ms;
+  - the fallback branch (robot was off before TV) fades the lights
+    out with a 1 s transition instead of an abrupt cut.
+
 ## 2.0.31 - 2026-04-21
 
 ### Fixed
