@@ -6,7 +6,7 @@
 # restart the addon for an instant reload. See docs/operations/deployment.md.
 
 name: "casasmooth"
-version: "2.0.31"
+version: "2.0.32"
 slug: casasmooth
 description: "casasmooth Smart Home System"
 url: "https://github.com/chrohrbach/casasmooth-addon"
