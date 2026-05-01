@@ -1,5 +1,94 @@
 # Changelog
 
+## 2.0.33 - 2026-05-01
+
+### Added
+- Per-area `input_select.cs_<area>_lighting_source` and a 30-second
+  `timer.cs_<area>_lighting_grace` per zone, forming a unified state
+  machine for "who currently drives the lights in this area". Every
+  lighting automation now declares its priority via the canonical
+  table in `app/core/lighting_arbiter.py` (auto < manual < onoff =
+  scene_memo < welcome < tv < scene_script < general < playback <
+  fallback) and refuses to act when a higher-rank source already
+  holds control.
+- `general` mode wired into the existing all-on / all-off / smart-toggle
+  buttons. Claims source on every area-with-lights for the duration of
+  the action, then releases — blocked when any area is in playback or
+  fallback.
+- `fallback` kill switch: a global hourly automation that turns off any
+  light that has been on longer than the new
+  `input_number.cs_lighting_fallback_hours` slider (0 = disabled,
+  default 0). Source claim isolates the kill from any active
+  automation; runs in `parallel` so an unreachable device cannot
+  strand the source.
+- Scene 5-10 buttons now toggle: a second press of the same scene
+  button stops the running animation; pressing a different 5-10 scene
+  during an animation cleanly switches scripts. The dashboard button
+  highlights while its script is running.
+
+### Changed
+- Standard / enhanced lighting automations now gate on
+  `lighting_source == auto`. The old `lighting_timer == active` check
+  is preserved alongside; the source check is what enforces the 30-s
+  grace after a manual action.
+- Scenes 5-10 are now framed as "scripted scenes" and the per-area
+  scene 10 (formerly "Cercle de teinte") is repurposed as the
+  circadian rhythm script — same 2700-6500 K / 30-100 % curve as the
+  retired `auto_daylight_enabled` toggle, but driven by the regular
+  scene-row UI instead of a standalone button.
+- Welcome lighting and TV-scene-on now claim source so user actions
+  cannot interrupt them silently. Welcome releases on its
+  `lighting_timer` expiry; TV-scene-off releases when all media
+  players become inactive.
+- Playback mode toggles `source` on every area-with-lights — the
+  whole house follows the global toggle in lockstep.
+- Animation start (scene 5-10): the area's lights, bulbs, and
+  wall-switches are always turned off before the script runs, even
+  when transitioning between scenes. Fixes lit bulbs / switches that
+  used to "leak through" an animation if they were on at start.
+- Animation end (scene 5-10): RGB lights are reset to 3000 K at low
+  brightness, then every area light is turned off. Lights no longer
+  stay on in the script's last-frame color when an animation finishes.
+  The dashboard "robot" toggle is restored to its pre-animation state
+  (the per-scene cleanup already did this; the new safety net handles
+  it too, important when `exceptions_enabled` is on and the per-scene
+  cleanup is gated out).
+
+### Fixed
+- Per-day weekday exception schedule (`s5:07:01-07:04`, etc.) on
+  enhanced-only-with-presence zones with no motion in the window. The
+  override used to set `lighting_scene` and stop there; now it also
+  presses the matching restore_scene button so the scene is actually
+  applied without depending on a periodic auto tick.
+- Animation script while-loop now also checks `lighting_source ==
+  scene_script`, so a higher-priority mode (playback / general /
+  fallback) supplanting mid-animation makes the script exit at the
+  next iteration instead of running silently in the background.
+- Scene 10 (circadian) iteration uses `wait_template` with a 60-s
+  timeout instead of a flat `delay: 60s` — the script exits within
+  ~100 ms of being supplanted instead of having to wait for the next
+  natural cycle.
+- `homeassistant.turn_off` calls in the new white+off cleanup,
+  in the global force-off, and in fallback kill no longer pass a
+  `transition` argument: the generic multi-domain service rejects
+  the key when the target list mixes lights with switches, which was
+  silently aborting the cleanup mid-sequence and leaving
+  `lighting_source` stuck at `scene_script`.
+- 50 % button now actually sets brightness to 50 %. The previous
+  `light.turn_on` carried no `data` block, so dimmable lights came on
+  at HA's default brightness (typically 100 % or last value). Same
+  idempotent guard pattern as the 100 % button.
+- 100 % automations are now generated only for areas with multiple
+  lights (matching the dashboard button which is conditional on
+  `has_multiple_lights`). Previously the automation was built
+  unconditionally — single-light areas had a dead-code automation
+  whose trigger entity did not exist.
+- Stale `cs_<area>_auto_daylight_enabled` entity reference removed
+  from standard / enhanced automations and from the `cs_home.py`
+  generator. The entity is no longer produced; orphan entries in
+  `.storage/core.entity_registry` are cosmetic and can be cleaned up
+  via the HA UI.
+
 ## 2.0.32 - 2026-04-27
 
 ### Fixed
