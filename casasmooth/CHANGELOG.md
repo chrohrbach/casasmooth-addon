@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.34 - 2026-05-02
+
+### Fixed
+- Addon boot was tripping the HA watchdog on slow / failing OpenRouter calls
+  during help-page narrative generation, restart-looping the addon. `run.sh`
+  now invokes `cs_update --skip-llm` at boot — the same outputs are filled in
+  by the in-process background task in `app/api/server.py::_ui_docs_loop`
+  once the API server is listening, so first-boot is fast and LLM work
+  lands a few minutes later without blocking. (See
+  `feedback_addon_boot_watchdog.md`.)
+
+### Added
+- `python3 -m app.commands.cs_update --skip-llm` direct flag (mirrors the
+  `python3 -m app update --skip-llm` exposed in `cs_main.py`). Both gate the
+  same three LLM steps in `cs_generator.run`: recommendations, context docs,
+  and help page.
+- `sqlalchemy>=2.0` baked into the addon image so the booking + power
+  routers in `app/api/` import successfully and mount on `/api/booking/*`
+  and `/api/power/*`.
+
 ## 2.0.33 - 2026-05-01
 
 ### Added
