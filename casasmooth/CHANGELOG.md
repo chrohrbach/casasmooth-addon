@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.0.35 - 2026-05-02
+
+### Fixed
+- Power router (`/api/power/*`) failed to mount on 2.0.34 because the
+  addon image lacked `jinja2` (FastAPI's `Jinja2Templates` raised on
+  import). Now baked alongside `sqlalchemy` in `Dockerfile.production`.
+- Booking SPA built `https://...:28100/api/booking` for production —
+  port 28100 is not exposed publicly via the casasmooth tunnel, so all
+  fetches failed with "failed to fetch" once the user clicked Identify.
+  Same-origin path on `*.casasmooth.net`, explicit `:28100` only on LAN
+  direct.
+- Booking magic-link emails now point at `/local/booking/index.html#/...`
+  (HA blocks `/local/<dir>/` directory listings with 403, but serves
+  named files).
+- Booking magic-link email is now an HTML message with a clickable button
+  (was plain text).
+
+### Added
+- Booking SPA logo (32px header) imported as a Vite asset.
+- Booking SPA + Power templates pick up the canonical mobile theme tokens
+  (`--surface`, `--on-surface`, `--card-background`, `--primary`, ...).
+- nginx wildcard server caches hashed `/local/{mobile,booking}/assets/*`
+  for 30 days — first hit goes through frps, subsequent hits served from
+  the Azure VM (visible via `X-Cache-Status: HIT` header).
+
 ## 2.0.34 - 2026-05-02
 
 ### Fixed
