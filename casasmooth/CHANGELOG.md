@@ -1,5 +1,59 @@
 # Changelog
 
+## 2.0.37 - 2026-05-04
+
+### Added
+- Registry orphan cleanup: new `OrphanCleanupManager` detects helper /
+  automation / script entities that previous releases generated but
+  the current generation no longer emits, and removes them via the HA
+  WebSocket API (`config/entity_registry/remove`). All deletions are
+  audit-logged to `logs/cs_orphan_cleanup.jsonl`. Safety rails: only
+  `cs_*`-prefixed entries, skips user-disabled / hidden entries,
+  refuses to flag a domain whose generation YAML is missing or
+  smaller than 1 KiB, hard cap on deletions per run. Exposed as
+  `python3 -m app cleanup orphans [--apply] [--list] [--domain X]
+  [--max-deletions N] [--yes]` for manual runs, and wired into
+  `cs update` as a final step before restart with a per-cycle cap of
+  2000 so a large backlog drains gradually. Validated on a long-lived
+  production install: 13 146 stale entries removed, 0 errors.
+- Power outlets surface as a dedicated section in each area view on
+  the Home dashboard.
+- New `cs_<area>_vacuum_resume_automation` resumes any vacuum stuck
+  in `paused` state for 10 minutes (manual pause, recoverable error).
+  The presence-triggered send-home automation now skips when any
+  vacuum is already paused, leaving recovery to the resume automation.
+
+### Changed
+- Energy dashboard renders even when only one individual consumer is
+  configured (previously fell back to the empty-state). Every section
+  is now gated on its actual prerequisites — Date / Distribution /
+  Sources table / Indicators / Details / Sources tiles only render
+  when their backing PV / grid / battery / consumption sensors exist
+  — so the view never shows an empty HA Energy built-in card. The
+  redundant Consumers / Consumers history / Devices sections
+  wrapping HA's `energy-devices-graph` were dropped (they duplicated
+  the rule-based Consumers section that was already gated correctly).
+- Lighting 100% / 50% / Auto buttons (and their backing automations)
+  are now generated for any area with at least one lighting entity,
+  not just multi-light areas. Keeps the UI row layout consistent
+  and removes the "missing button" surprise on small areas.
+- Enhanced lighting / heating / vacuum automations now recognize the
+  `presence_sensors` registry category (typically mmWave /
+  `device_class=presence`) as persistent presence alongside
+  occupancy: included in the OR-conditions, in the periodic
+  `time_pattern` re-evaluation, and in the 2-minute sustained-off
+  trigger of the lighting-off automation. Motion sensors stay
+  edge-based and remain a fallback when all persistent sensors are
+  unavailable / unknown.
+
+### Removed
+- Dead, unsafe code in `cs_registry.py` that wrote directly to
+  `/config/.storage/core.entity_registry`
+  (`enable_entities` / `unhide_entities` / `_save_entity_registry`).
+  These had zero call sites and would have raced HA's in-memory
+  cache. The safe equivalents in `HassApi` (which go through
+  `config/entity_registry/update`) are unaffected.
+
 ## 2.0.36 - 2026-05-03
 
 ### Added
