@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.38 - 2026-05-05
+
+### Added
+- Standalone `cs_lighting` dashboard, gated on the `enhanced_lighting`
+  subscription, visible in the sidebar for all users. One section per
+  area: 3-column lights grid with `more-info` panel on tile body click
+  (brightness/color), 6×2 scenes grid with 100% + scenes 1-4 + suspend
+  on row 1 and FX scenes 5-9 on row 2 (suspend rendered same size as a
+  scene button), and a per-area unavailability banner driven by a real
+  `template binary_sensor.cs_<area>_lighting_any_unavailable`. The banner
+  card is wrapped in a `condition: state` conditional card so it
+  collapses entirely when no fixture is unavailable (HA conditional
+  cards do not support `condition: template`, hence the binary sensor
+  indirection). Empty grid cells render borderless — no placeholder
+  markdown — matching the cs_home look.
+- Multi-provider LLM gateway in `app/utils/llm.py`: Infomaniak (Swiss
+  data residency) primary for bulk text purposes (chat, translate,
+  recommendations, blog, catalog, rules, features); OpenRouter fallback
+  for tool-calling-heavy purposes (conversation) and premium narrative
+  (ui_docs via Claude Sonnet) and vision (Gemini Flash). Per-provider
+  circuit breaker, per-purpose provider chains, env-var overrides.
+
 ## 2.0.37 - 2026-05-04
 
 ### Added
