@@ -49,6 +49,69 @@
   `last_triggered` "Il y a X secondes" noise no longer pollutes the
   dashboard.
 
+### Lighting
+- C1–C11 hardening sequence on the lighting evaluator. C1 introduces
+  a dedicated `lighting_eval` timer plus a boot reset of orphan
+  rank-2 sources. C2 extracts per-scene apply scripts
+  (`script.cs_<area>_apply_scene_<s>`) and lets the system path
+  bypass the `scene_memo` claim that was breaking loops. C3–C6 move
+  the model from a `/30s` polling automation to event-driven
+  triggers (TV / illuminance / UCV state changes) gated by the eval
+  timer, with a 30 s boot grace. C8 debounces TV state triggers and
+  excludes `unavailable` artefacts. C9 simplifies TV triggers to
+  `playing` / `on` / `off` / `standby` only. C10 aligns the
+  `standard_lighting` TV triggers with C9. C11 adds a mid-sequence
+  presence bail in the off automation.
+- TV scene logic simplified: presence-driven inline override, UI
+  selector reduced to 0–4.
+- `enhanced_lighting` now fires on TV state changes (timer-gated) so
+  the TV scene applies in motion-only areas like `mansarde`.
+- Registry: cast Chromecasts whose name contains `_tv*` are now
+  classified as TVs so they correctly trigger TV scenes.
+
+### Performance / Recorder
+- Recorder Phase 1 exclusions: high-frequency SCB / cs_power / Bambu
+  / Apollo / plug-voltage sensors are now excluded from the recorder.
+  Long-term statistics survive (the exclusion is on `state`, not on
+  `statistics`). Significant reduction in DB churn and
+  `home-assistant_v2.db` growth.
+- UCV (`update_current_values`) state-driven refactor: the
+  per-area `cs_<area>_update_current_values` automation no longer
+  fires on a `time_pattern` of `/1`; it now uses
+  state / time / template triggers. Cuts ~73 k UCV fires/day across
+  25 areas while propagating period and parameter changes
+  instantly.
+
+### Rules & Detection
+- IKEA + Hue motion matching consolidated across Matter / ZHA /
+  Z2M. The classifier now keys on manufacturer rather than model,
+  which covers truncated Matter names (`MYGGSPRAY`, `VALLHORN`),
+  Z2M part-number variants, and the DIRIGERA empty-model edge case.
+- Frigate restart alerts are now forwarded to `info@`.
+- Quality-gate noise from `notifications.get_secret('guid')` is
+  silenced via `log_missing=False`.
+
+### Cloud / Infrastructure
+- Cloud API endpoints migrated to `api.casasmooth.net` (Phase 5).
+- Heartbeat metadata now reads the version from the `VERSION` file
+  rather than a hard-coded constant. `OPENROUTER_CHAT_MODEL`
+  switched to `deepseek` (the previously configured `nemotron:free`
+  model became unreliable).
+- Security: hard-coded GitHub tokens removed from the source tree;
+  legacy `Dockerfile` retired (only `addon/build/Dockerfile.production`
+  remains).
+- `cs_secrets.yaml` master no longer tracked in git (was committed
+  in error in an earlier commit; history retains the file but no
+  new commits will include it).
+
+### API
+- Public `/api/website/catalog.csv` endpoint plus internal project
+  quote tooling under `internals/`.
+
+### Docs
+- OBD telemetry bridge spec v2 added; `OBDLink CX` is the new
+  reference adapter.
+
 ## 2.0.38 - 2026-05-05
 
 ### Added
