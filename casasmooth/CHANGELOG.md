@@ -1,5 +1,54 @@
 # Changelog
 
+## 2.0.39 - 2026-05-10
+
+### Added
+- Enhanced Media dashboard rework: when `enhanced_media` is in the
+  subscription, three new sections appear at the top of the Media
+  view. **Now Playing** is a hero `custom:mini-media-player` bound to
+  the best available player (preferring `media_player.mass_*`, falling
+  back to the first speaker, then any `media_player`). **Quick Moods**
+  is a 2×2 grid of tap-to-trigger tiles wired to four
+  `input_button.cs_media_mood_{morning,breakfast,dinner,night}`
+  helpers (installer wires the actions in HA automations). **Music
+  Library** is a markdown intro plus a button that navigates to the
+  MA addon panel at `/d5369777_music_assistant`.
+- Auto-provisioning step `provision_music` in cs_update (idempotent):
+  registers the Music Assistant addon repository with Supervisor,
+  installs and starts the MA addon if missing, opens a WebSocket to
+  MA and ensures a Filesystem provider points at `/media/music`,
+  copies the bundled public-domain demo MP3s into
+  `/media/music/casasmooth/`, and posts a persistent HA notification
+  when no `media_player.mass_*` exists so the user knows to open the
+  MA panel once (which spawns a Browser Player). No-op when
+  `enhanced_media` is not subscribed; failures are logged and never
+  block the update.
+- 5 public-domain demo MP3 files bundled in
+  `app/data/demo_media/casasmooth/` (Bach Brandenburg 6, Vivaldi
+  Spring, Satie Gymnopédie 1, Mozart Eine kleine Nachtmusik, Chopin
+  Klavierwerke; ~55 MB total). All sourced from Internet Archive
+  recordings whose composers and performers are in the public domain.
+  Companion script `internals/fetch_demo_media.py` resolves
+  identifiers via the IA metadata API so a refresh or replacement is
+  one command.
+- CLI `python3 -m app provision music` runs the MA provisioning
+  workflow on demand for support / one-shot scenarios.
+- FR / EN / DE / IT / CS translations for the new media keys
+  (`ui_now_playing`, `ui_quick_moods`, `ui_music_library`,
+  `ui_music_library_intro`, `ui_open_music_library`,
+  `ui_mood_*`).
+
+### Changed
+- `enhanced_active` no longer requires `media_player.mass_*`; the
+  enhanced sections render as soon as the subscription is present,
+  with the Now Playing card pointing at a sensible fallback. Avoids
+  shipping an empty Media view to enhanced_media subscribers before
+  MA has spawned its first Browser Player.
+- Quick Moods tiles use `hide_state: true` + `vertical: true` and
+  call `input_button.press` explicitly, so the default
+  `last_triggered` "Il y a X secondes" noise no longer pollutes the
+  dashboard.
+
 ## 2.0.38 - 2026-05-05
 
 ### Added
