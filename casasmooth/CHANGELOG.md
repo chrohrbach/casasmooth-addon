@@ -1,5 +1,59 @@
 # Changelog
 
+## 2.0.40 - 2026-05-11
+
+### Remote access
+- Phase 1 deployed on .149: per-system tunnel tokens, frps auth plugin
+  in cloud-api, and an in-addon `tunnel_service` spawned from
+  `server.py` lifespan so each HA instance is reachable as
+  `https://{ha_uuid}.casasmooth.net` without operator intervention.
+- Tunnel cutover follow-ups: token rotation hooks, watchdog, retry
+  back-off, and clean shutdown sequencing.
+- `cs_administration` dashboard now surfaces the read-only tunnel URL
+  for the current system so support can copy-paste it without going
+  through the cloud portal.
+
+### Media
+- MA player detection rewritten: instead of pattern-matching `mass_*`
+  in the entity_id, the dashboard reads the HA entity_registry and
+  picks players whose integration `platform == music_assistant`. Fixes
+  Now Playing on installs where the user renamed the MA player or where
+  `cs_rules` has no `music_assistant` entry yet.
+- Quick Moods (fixed 2×2 buttons) replaced by **dynamic top-10 MA
+  playlists** rendered as tap-to-play tiles. Falls back gracefully when
+  MA exposes fewer than 10 playlists.
+- Media view sections reordered to: Library, Now Playing, Playlists,
+  MA, Players, TVs. Settings tiles in the same view follow the same
+  order so the configuration UI mirrors the rendered layout.
+- Category sections deduplicate `mass_*` players that already appear
+  in the dedicated MA section.
+- Music Assistant addon is now installed with `boot=auto`, watchdog,
+  ingress_panel, and `auto_update=true` so support doesn't have to
+  babysit MA upgrades after first provision.
+- Persistent HA notification when MA has no exposed player is clearer
+  about the one-time `expose_to_ha` step required.
+
+### Fixes
+- `camera_process_snapshots` API endpoint crashed with
+  `pattern=None` when called without a filename pattern, which had
+  silently stalled the snapshot pipeline since 2026-04-18 — files were
+  piling up in the cache instead of being processed.
+- Daily-time camera filenames now use the `area_id` slug instead of
+  the localized `area_name`, matching the convention already used by
+  the frequency-based path. Avoids broken paths on French / German
+  installs where area names contain accents or spaces.
+
+### Repos / Build
+- `endpoint/` (ESP32-S3 4G camera firmware, ESPHome cameras,
+  MicroPython sensors) split out to a dedicated
+  [`chrohrbach/casasmooth-endpoint`](https://github.com/chrohrbach/casasmooth-endpoint)
+  repository. All `casasmooth_endpoint` legacy references dropped from
+  this repo (paths, scripts, docs).
+- `addon/build/DOCS.md` is now the source of truth for the HA Add-on
+  Store description; the workflow mirrors it to
+  `casasmooth-addon/casasmooth/DOCS.md`. Content extended with Music
+  Assistant integration, voice setup, and dev mode notes.
+
 ## 2.0.39 - 2026-05-10
 
 ### Added
