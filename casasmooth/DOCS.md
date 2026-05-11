@@ -102,7 +102,7 @@ watchdog.
 
 ## Pre-installed Add-ons
 
-These eight Home Assistant add-ons are installed automatically by
+These six Home Assistant add-ons are installed automatically by
 `install_deps.sh` on the very first boot. Subsequent boots skip the
 step (a `.deps_installed` marker is written under `/config/casasmooth/`):
 
@@ -114,8 +114,12 @@ step (a `.deps_installed` marker is written under `/config/casasmooth/`):
 | `core_piper` | Piper | Yes | Text-to-Speech engine for the voice assistant |
 | `core_configurator` | File editor | No | Start manually from the sidebar when needed |
 | `core_samba` | Samba share | No | Configure credentials before starting |
-| `core_duckdns` | DuckDNS | No | Configure domain and token before starting |
-| `core_letsencrypt` | Let's Encrypt | No | Configure domain before starting |
+
+Remote HTTPS access is handled by the casasmooth **cs-remote** tunnel
+(`frpc` baked into this add-on, `frps` on the cloud VM, public URL
+`https://{ha_uuid}.casasmooth.net`). DuckDNS and Let's Encrypt are
+therefore not pre-installed — install them manually if you need a
+parallel direct-WAN setup.
 
 If installation of any add-on fails (transient Supervisor error,
 network blip), the add-on retries on the next boot until the marker
