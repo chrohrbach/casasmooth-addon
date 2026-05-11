@@ -1,5 +1,48 @@
 # Changelog
 
+## 2.0.41 - 2026-05-11
+
+### Lighting — extinction strategy overhaul
+- **Categorization rules (cs_rules.csv)**: VALLHORN / MYGGSPRAY / SML00x
+  now categorized strictly from HA `device_class` (motion → motion_sensors,
+  occupancy → occupancy_sensors). Removed brittle brand-override rules.
+  SNZB-06P split into dc-based rules. MQTT generic motion rule routes to
+  `motion_sensors` instead of the dead-end `remote_motion_sensors`
+  category (the latter is no longer referenced by code). Rules snapshot
+  v13 published to rules-service (363 rules total).
+- **Removed the motion-fallback guard** in enhanced lighting. Motion and
+  occupancy sensors trigger ON independently. Previously, motion was
+  gated as a fallback that only fired when all persistent sensors were
+  unavailable — that gate hid PIR misses behind unreliable occupancy.
+- **New Optimise switch** (`input_boolean.cs_<area>_lighting_optimise`)
+  per MIXED area (zones with both a timer source and a persistent
+  source). `off` (default) = extinction by configured delay (timer-based).
+  `on` = extinction by occupancy state + 2-min sustained-off.
+- **Sustained-off as fallback (fix bain stuck-on bug)**: in MIXED zones
+  with Optimise=off, if entry occurred via a persistent sensor only (no
+  motion/camera/door, so no timer was started), sustained-off triggers
+  are still honored — lights extinguish via the slider-configured delay
+  applied to the occupancy `for:` window. Without this fallback, MIXED
+  zones with persistent-only entry stayed lit indefinitely.
+- **Unified delay slider semantic**: `cs_<area>_lighting_delay` (and its
+  per-period variants) is now visible in *every* zone with an extinction
+  source. The slider drives both the timer duration (timer-source zones)
+  and the sustained-off `for:` duration (persistent-source zones), via a
+  templated state trigger. Previously, persistent-only zones (atelier,
+  cave, garage, exterieur on Chalet) had a hardcoded 2-min extinction
+  and the slider was hidden — leading to UI inconsistencies and no way
+  to tune the extinction window.
+- **Skip off-automation for no-trigger zones** (e.g. `deco`): previously
+  generated a dead-code automation with `timer.finished` as the only
+  trigger; now skipped entirely.
+
+### Functional model
+- `services_manifest.json` regenerated (254 references, +2 vs prior):
+  picks up the new `remote_access` service and the
+  *"Configurable extinction strategy per MIXED area"* feature, attached
+  to both `standard_lighting` and `enhanced_lighting`.
+- `cs_functional_model.json` regenerated from the manifest.
+
 ## 2.0.40 - 2026-05-11
 
 ### Remote access
