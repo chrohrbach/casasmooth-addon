@@ -1,5 +1,100 @@
 # Changelog
 
+## 2.0.42 - 2026-05-17
+
+### LLM gateway — cloud-managed routing
+- **Infomaniak primary + OpenRouter fallback** rolled out across all
+  purposes (chat, conversation, translate, recommendations, blog,
+  catalog, rules, features). Per-provider circuit breaker, per-purpose
+  provider chain, provider-aware metrics. Ministral-3 14B replaces
+  Apertus everywhere on Infomaniak (Apertus 20k context overflowed on
+  long prompts).
+- **Cloud-managed routing config**: the per-purpose model map is now
+  edited in the operations portal and pushed to addons — no addon
+  redeploy needed to retune chat/conversation models. Editor seeds from
+  baked-in defaults when DB is empty; portal page gains
+  provider/call_type/model filters on `/llm-metrics`.
+- **Weekly model-availability monitor**: cron at Mon 08:00 UTC mails an
+  advisory report to info@casasmooth.com (replaces the GH Actions
+  workflow).
+- HA Extended OpenAI Conversation now routes through the casasmooth
+  gateway. OpenRouter chat model switched to `deepseek-chat`.
+
+### Voice assistant (Jarvis / Assist) — accuracy hardening
+- **Zone-filtering**: prompt now only includes the area(s) mentioned in
+  conversation instead of dumping the whole house.
+- **Per-area sensor section** with **UoM-first classification**:
+  semantic model enriched from the entity registry, locale-independent
+  unit-of-measurement → category map, FR/EN name tokens dropped. Unit
+  shown in prompt. Fixes "0 lux" hallucinations on FR-named sensors.
+- **Anti-hallucination guards**: new `get_entity_state` template tool
+  (was referenced by prompt but missing); prompt now mandates calling
+  it before any state claim; anti-sycophancy rule + context continuity.
+- **Sensor filtering**: nightly `_sleep_avg_` aggregates excluded from
+  both prompt sensor section AND HA exposed_entities (single
+  `_is_realtime_for_llm` predicate). Prevents DeepSeek from hallucinating
+  tool names against stale aggregates.
+- **Topic policy** broadened with weather examples; web-search wired
+  via `cs_search_web_technical`; tool rename
+  `search_casasmooth_website` → `casasmooth_help` (LLMs were collapsing
+  the double-s on the old name).
+- **STT fallback to HA Cloud** on CPUs without X86_V2 (faster_whisper
+  crashloop on Proxmox kvm64 default).
+- **Devices grouped by semantic category**, not HA domain, in prompt.
+- **Voice/conversation model swap**: chat_model now sourced from the
+  dedicated `CASASMOOTH_ASSISTANT_MODEL` secret. Fix: setup_voice
+  (step 15) no longer overwrites setup_conversation (step 14).
+- KB recompiled + prompt hardened for the site chat as well.
+
+### AI Automations — IR-based v2
+- New triggers/conditions/actions schema with arbitration, package
+  helpers, and boot-time sync. End-to-end wiring: HA Core tool
+  dispatch, unique IDs, registry preload, manual trigger path.
+- **Voice-driven CRUD**: `quick_create_ai_automation` (draft+confirm in
+  one tool), `bulk_delete`, slugified entity_id for test_run.
+- Arbiter release on delete/disable. Persistent path. ai_custom
+  lighting rank. Owner entities + REST endpoints.
+
+### cs-deploy — unified CLI
+- New `cs-deploy` Python CLI replaces the PowerShell + Bash deploy
+  scripts. `deploy-all` command (combined Azure + HASS + health).
+  Containers cmd parameterized for Azure + Infomaniak.
+- `blob_migrate` + `maintenance` modules for the Azure → Infomaniak
+  cutover. Cron sync module (idempotent BEGIN/END markers).
+- SCP fallback via `ssh cat` for SCP-disabled hosts (.149); utf-8 +
+  `errors=replace` on captured subprocess output.
+
+### docs/build — unified content pipeline
+- Generic pipeline orchestrator + `build_content` for presentation,
+  technical, website. Hash-cache, separated config/output, depot vault
+  lookup. Brand-aligned HTML/PPTX rendering. Source fragment hints +
+  larger context window. Switched to gemini-2.5-pro.
+
+### Cloud-api Phase 2
+- Eliminate `SecretsCacheService`; secrets served from disk.
+- Logs-triage Phase A: promotion filters + bulk-ignore.
+- CI: stop cascading website redeploys + public-URL watchdog.
+- Watchdog log: clean failure-code formatting (000000 → 000).
+- Migrate Azure-specific FQDN to `api.casasmooth.net`.
+
+### Energy / SGR
+- Add management summary for the energy domain.
+- SGR: align with SmartGridReady spec, add MQTT discovery bridge.
+
+### Misc fixes
+- **Frigate addon**: dynamic slug + Supervisor REST replaces broken
+  `ha addons restart`.
+- **Billing**: replace "TVA incluse"/"TTC" → "Sans TVA" across site,
+  CRM, emails and quotes.
+- **Voice notifications**: Jinja2 broken on gas alerts + dedup 3
+  hardcoded TTS blocks.
+- **API**: remove duplicated `/api/matter/entities` endpoint.
+- **Zone-scene UI**: title global panel + disambiguate duplicate zone
+  labels.
+- **nginx**: route `/api/*` directly to image-ai for ESP32 cameras.
+- **Ops**: close cleanup gap — disk hit 100% + cs-deploy was not
+  shipping crons.
+
 ## 2.0.41 - 2026-05-11
 
 ### Lighting — extinction strategy overhaul
