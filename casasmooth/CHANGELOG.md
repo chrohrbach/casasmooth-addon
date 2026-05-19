@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.0.43 - 2026-05-19
+
+### Security view — occupancy + presence sensors restored
+- **Bug**: 5 call-sites queried `all_occupancy_sensors` as if it were a
+  meta-aggregate, but `cs_rules.csv` only assigns this category to
+  Frigate "all occupancy" virtual sensors. All other occupancy-tagged
+  sensors (IKEA Matter MYGGSPRAY, IKEA Zigbee VALLHORN, Philips Hue
+  SML003, Frient MOSZB-153, Aqara FP2…) fall under the generic
+  `occupancy_sensors` category and were never reached by the security
+  dashboard or security automations.
+- **Fix**: aligned the 5 call-sites on the existing atomic-enumeration
+  convention (`motion_sensors` + `occupancy_sensors` + `presence_sensors`)
+  used everywhere else in the codebase.
+  - `cs_security.py` — section "Présences" of dashboard Sécurité,
+    recommendations engine relevant_categories.
+  - `cs_home.py` / `cs_dashboards.py` — area_security tile.
+  - `cs_automations.py` — camera occupancy fallback + per-area
+    `verify_security_sensors` automation triggers.
+- **Data files** — renamed `all_occupancy_sensors` → `occupancy_sensors`
+  in `feature_requirements.json`, `site_context.json`, `chat_knowledge.json`,
+  `cs_translations.csv`, plus the website mirrors. Added the missing
+  `help_device_presence_sensors` translation. `cs_rules.csv` rule 164
+  (Frigate-specific) kept intact.
+- **Effect**: occupancy/presence sensors now feed (a) the "Présences"
+  section of the security dashboard, (b) the per-area
+  `verify_security_sensors` automation that increments the global event
+  counter, (c) the recommendations engine. The lighting path already
+  used the atomic category name and is unchanged.
+
 ## 2.0.42 - 2026-05-17
 
 ### LLM gateway — cloud-managed routing
