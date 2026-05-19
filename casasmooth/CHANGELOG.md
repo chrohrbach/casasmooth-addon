@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.44 - 2026-05-19
+
+### Per-area config cards — gate aligned with automation sensor union
+- **Bug**: room-level config cards (Lighting / HVAC / Security) only opened
+  on a subset of the sensors their underlying automations actually use. A
+  room with **only** an mmWave radar (`presence_sensors`) — or **only** a
+  vibration sensor for security — had the corresponding "Paramètres" panel
+  hidden even though the automation worked.
+- **Fix** (`app/core/dashboards/cs_home/cs_home.py`):
+  - **Lighting**: fetch `presence_sensors` at the call-site and pass a new
+    `has_persistent_presence` flag. The "Automations avancées" gate is now
+    `motion ∪ open ∪ occupancy ∪ presence(mmWave)` — same union as
+    `cs_automations.py` `all_devices`. `is_mixed_zone` corrected to use the
+    flag (was using the multi-zone-filtered list). Redundant `has_camera_sensors`
+    OR removed (camera is a subset of motion).
+  - **HVAC**: `area_presence` now includes `presence_sensors` — matches
+    `cs_automations.py` heating `presence_sensors = motion + occupancy + presence`.
+  - **Security**: `area_security` now includes `presence_sensors` and
+    `vibration_sensors` — matches the "Verify security sensors" automation
+    triggers. Smoke / heat / moisture / noise stay out (notification-only,
+    no UI to configure).
+
 ## 2.0.43 - 2026-05-19
 
 ### Security view — occupancy + presence sensors restored
