@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.0.45 - 2026-05-22
+
+### Frigate / camera health alerts — admin-only (no more client emails)
+- **Bug**: three technical alerts emailed/notified the client even though
+  they are pure admin/maintenance concerns:
+  - `CS - Surveillance - Frigate Offline Notification` — sent an explicit
+    email to `info@casasmooth.com` AND a `_create_notification_actions(PAM)`
+    block whose `M` channel routed a second email to
+    `input_text.cs_user_email` (the client).
+  - `CS - Surveillance - Frigate Auto Restart` (escalation branch on
+    excessive restarts) — same double-send pattern.
+  - `CS - Security - Camera Offline Alert` — had **no** admin email at
+    all, only a `PAM` block notifying the client (dashboard + app + email).
+- **Fix** (`app/core/cs_automations.py`):
+  - Drop the `_create_notification_actions(...)` block on all three.
+  - Keep / add a single `rest_command.cs_send_email` targeting
+    `info@casasmooth.com`, with the customer's email surfaced in the
+    subject and body for triage.
+  - Client now receives **zero** dashboard / app / SMS / email signal on
+    Frigate Offline, Frigate Excessive Restarts and Camera Offline.
+- **Out of scope** (unchanged): security alarms, lock failures, freezer
+  alerts, Low Disk and Getservices Stale — those remain customer-visible
+  per existing UX.
+
 ## 2.0.44 - 2026-05-19
 
 ### Per-area config cards — gate aligned with automation sensor union
