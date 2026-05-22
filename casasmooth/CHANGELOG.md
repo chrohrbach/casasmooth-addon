@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.0.47 - 2026-05-22
+
+### Lighting exception — fix scene-to-scene transitions in contiguous schedules
+- **Bug**: in `cs_parameters_<area>_update_current_values` (UCV), the two
+  template triggers `{{ ns.scene > 0 }}` and `{{ ns.scene <= 0 }}` only fired
+  on the boolean's `false→true` edge — not on changes of the underlying
+  `ns.scene` integer. With contiguous schedules like
+  `s1:8-9 s2:9-18 s3:18-22 s4:22-23`, every internal boundary (09:00,
+  18:00, 22:00) was silently skipped: the boolean stayed `True` across
+  the transition, so HA never re-evaluated UCV and the new scene's
+  `restore_scene_<N>` button was never pressed.
+- **Observed on Lykke 2026-05-22**: s1→s2 at 09:00 was missed on all 7
+  areas. Anne had to manually click `restore_scene_2` on each area at
+  09:37 (and again 2 of 7 areas at 08:34 because the s1 batch had been
+  partial). Same root cause across the whole client fleet using
+  multi-window day schedules.
+- **Fix** (`app/core/cs_automations.py`): replace the 2 boolean triggers
+  with 11 targeted ones — `{{ ns.scene == 1 }}` … `{{ ns.scene == 10 }}`
+  (one per scene) plus a single close `{{ ns.scene == -1 }}`. Each fires
+  its own rising edge as `ns.scene` enters its window, including the
+  s1→s2, s2→s3, … transitions. First-match-wins overlap semantics in the
+  Jinja parser are unchanged.
+- **Validation on .149 bureau** (test schedule `s1:11:07-11:08 s2:11:08-11:09`):
+  - 11:07:50 → `restore_scene_1_in_bureau` fired (window open ✓)
+  - 11:08:09 → `restore_scene_2_in_bureau` fired (contiguous transition ✓
+    — would never have fired with the old triggers)
+
 ## 2.0.46 - 2026-05-22
 
 ### Remote tunnel — fix multi-tenant proxy name collision
