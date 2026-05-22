@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.46 - 2026-05-22
+
+### Remote tunnel — fix multi-tenant proxy name collision
+- **Bug**: every frpc rendered `name = "hass" / "cs-api" / "mcp"` in its
+  `frpc.toml`. In frps, the proxy `name` is a server-global key, so the
+  second client to connect was rejected with
+  `new proxy [hass] error: proxy [hass] already exists`. With 14 systems
+  declaring `tunnel_status=connected` in DB, **0** had a working HTTP
+  route — including `.149` (the Phase 1 reference). Every public host
+  (UUID and slug) returned 404 `no route found` at frps.
+- **Fix** (`app/services/tunnel_service.py`): prefix each proxy name with
+  the system GUID so frps sees a unique key per client:
+  `name = "{guid}-hass"` (resp. `-cs-api`, `-mcp`). The auth plugin
+  (`/api/tunnel/auth`) does not key on proxy name, so the change is
+  transparent server-side; nginx → frps vhost routing is by host header
+  only, also unaffected.
+- **Rollout**: `.149` (dev_mount) picks up the new template on next addon
+  restart. Real clients (Lykke, Etoy, Chalet, Domenbach, …) need this new
+  image; frps is restarted to purge phantom proxy registrations.
+
 ## 2.0.45 - 2026-05-22
 
 ### Frigate / camera health alerts — admin-only (no more client emails)
