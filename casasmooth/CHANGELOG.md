@@ -1,5 +1,89 @@
 # Changelog
 
+## 2.0.48 - 2026-05-22
+
+### Security — full backend lockdown (6 audit rounds, ~40+ vulnerabilities closed)
+
+This is a security-only release. No functional change for end users; the
+addon should pull and restart transparently.
+
+**Per-system Bearer auth on cloud-api**
+- `Authorization: Bearer <token>` (the cs-remote tunnel secret, already on
+  every HASS at `/data/tunnel/frpc.toml`) is now required on:
+  `/api/files/{backup,restore,list}`, `/api/secrets`, `/api/email/send`,
+  `/api/diagnostics`, `/api/heartbeats/{guid}`, `/api/metrics/llm`,
+  `/api/audit/llm`, `/api/telemetry/reports`, `/api/tunnel/slug`,
+  `/api/systems/{guid}/migration/confirm`, `/api/llm/config` (GET),
+  `/api/systems/{guid}` (GET), `/api/subscriptions/{guid}`,
+  `/api/services/{guid}`, `/api/tunnel/provision` (when re-fetching
+  frps_token for an already-provisioned system).
+- Constant-time `hmac.compare_digest` on token comparison.
+- Anti-brute-force auto-lock: 50 fails from a single IP OR 200 globally
+  per hour (was 10 across all IPs — a known guid + cheap script could
+  lock any tenant's tunnel).
+
+**Admin-only on cloud-api writes**
+- `GET /api/systems` list, `PUT /api/bridging/{guid}`,
+  `POST /api/llm/config`, `GET /api/llm/config/history`, all `/api/admin/*`.
+
+**HASS-side (server.py) AuthMiddleware**
+- Tunnel traffic (`<guid>.casasmooth.net`) no longer satisfies
+  `is_internal_host` or `X-Casasmooth-Context: lovelace` bypasses — both
+  short-circuited the entire cs API auth.
+- `/api/internal/*` removed from PUBLIC_PREFIXES (was allow-listed with a
+  fake "guarded by localhost check"). An attacker could call
+  `/api/internal/sync_csadmin_password` via the tunnel to RESET the HA
+  admin password. Now AuthMiddleware enforces loopback + RFC1918 origins,
+  and `sync_csadmin_password` adds a hardened
+  `_verify_internal_request_origin` defence-in-depth.
+- `POST /api/auth/config` (the disable-the-whole-middleware switch) is
+  now loopback-only.
+- CORS regex tightened — `allow_origins=["*"] + allow_credentials=True`
+  (spec violation) replaced by a regex that accepts only
+  `*.casasmooth.net` + RFC1918 + .local.
+
+**Side services**
+- rules-service: HTTP middleware gates every admin path;
+  `/api/entities/{report,uncategorized}` require per-system Bearer.
+- logs-service: `POST /api/logs` requires Bearer; reads + management
+  endpoints require admin.
+- upload-web (`/upload/api/*`): was UNAUTHENTICATED with path-traversal
+  on `csuuid` — now Bearer per-system + UUID-regex + filename
+  sanitisation + resolved-path containment.
+- image-ai (`PUT /api/camera/upload`): strict devuuid regex (rejects
+  `..`) + enrolment check + 50 MB cap.
+
+**Token mirror**
+- `tunnel_service` mirrors the per-system token at boot to
+  `/config/casasmooth/locals/cs_tunnel_token` (mode 0600). HA Core /
+  shell_command callers (which can't see the addon's `/data/tunnel/`)
+  read it from there. Done BEFORE frpc binary check, so the file appears
+  within milliseconds of addon start (avoids race with `cs update`).
+
+**Heartbeat payload guard**
+- POST /api/heartbeats caps each capability model (semantic / gap /
+  functional) at 10 MB (was unbounded → DB-pollution / DoS risk).
+
+**Infrastructure**
+- Azure PG firewall: removed `AllowAzureServices` (was allowing every
+  Azure tenant) — kept only the VM IP + admin IP.
+- Azure PG admin password rotated; pushed to depot
+  (`azure-cloud/db_password`) and propagated to the VM `.env`.
+- nginx rate-limiting added in repo (heartbeats / login / files /
+  api_general) — deferred deploy until the Infomaniak migration is
+  complete (current Azure default.conf has diverged).
+
+**Tooling**
+- New `cs-deploy github sync-secrets` — pushes depot secrets
+  (ADMIN_TOKEN, LOGS_SERVICE_URL) into GitHub Actions repo secrets so
+  workflows like `analyze_logs.yml` can authenticate against logs-service.
+- `scripts/dbcheck.py` no longer carries the DB password in cleartext;
+  resolves DATABASE_URL from depot.
+
+**DB cleanup**
+- 34 stale systems (last_seen <2026 OR never-seen) removed via the
+  proper `DELETE /api/admin/systems/{id}` cascade.
+
 ## 2.0.47 - 2026-05-22
 
 ### Lighting exception — fix scene-to-scene transitions in contiguous schedules
