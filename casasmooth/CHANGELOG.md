@@ -1,5 +1,58 @@
 # Changelog
 
+## 2.0.49 - 2026-05-24
+
+### Security — Round 7 + Round 8 + Round 8 Niveau 2
+
+Continuation of the 2.0.48 lockdown. Three further rounds of hardening,
+plus an MFA reminder on the addon side. No functional change for end users.
+
+**Round 7 — security-advisor MFA reminder (HA-side)**
+- New advisor flow detects interactive HA accounts that haven't enrolled
+  in TOTP and nags via persistent notification + email. Filters out
+  `system_generated` accounts (Supervisor, Cast bridge, ...) and reads
+  the correct HA 2024+ auth schema:
+  `auth.data.credentials[].user_id` (top-level array) + the singular
+  `auth_module.totp` storage file.
+- i18n: 6 new keys in `cs_translations.csv` (FR/EN/DE/IT/CS).
+- Three-layer anti-spam on the camera-offline advisor: 15-min
+  `binary_sensor` debounce + 2-min trigger `for:` + 6-hour cooldown.
+
+**Round 8 — HA LLATs encrypted at rest on the cloud DB**
+- `app/utils/secret_box.py`: Fernet wrapper with `enc:v1:` prefix and
+  `MultiFernet` rotation support. `cryptography>=42` added.
+- Migration 085 encrypts existing `systems.remote_token` in place and
+  scrubs the duplicate copy that was leaking into `systems.extra_data`
+  via the heartbeat merge.
+- Pydantic `field_validator` on `SystemResponse.remote_token` so every
+  endpoint that returns the model decrypts on the way out.
+- `STRICT_API_AUTH` boot guard: cloud-api returns 503 on `/health` when
+  either `CASASMOOTH_DB_FERNET_KEY` or `STRICT_API_AUTH` is missing, so
+  monitors page on misconfiguration.
+- `cs-deploy` learned both env vars + a `_ensure_fernet_key` helper that
+  auto-generates a Fernet key on first deploy and persists it to depot
+  at `casasmooth-internal/db_fernet_key`.
+- Removed the hard-coded `ADMIN_WEB_PASSWORD` default
+  (`csadmin!0301040105`) from operations-portal + compose — it was
+  readable from the repo.
+- Verified in prod: 13/13 `systems.remote_token` rows are `enc:v1:` at
+  rest, 0 plaintext leftover in `systems.extra_data`.
+
+**Round 8 Niveau 2 — per-admin accounts + TOTP MFA + audit log**
+- Shared `csadmin` / `ADMIN_TOKEN` retired in favour of per-admin
+  identity. Admins live in `website_users` (role=`admin`),
+  `password_hash` is PBKDF2, `totp_secret` is Fernet-encrypted at rest.
+- Migration 086: `admin_audit_logs` records every admin mutation
+  (action, target, method/path, status, IP, user-agent, admin identity).
+  FastAPI middleware auto-appends one row per `/api/admin/*` +
+  `/api/systems` write.
+- `admin_api_tokens` stores per-admin API tokens (sha256 only).
+- Two-step login (email+password → TOTP) on `/portal/login` and
+  `/crm/login`. Lockout after 5 consecutive failures.
+- New CLI: `python3 -m app admin {create|list|reset-totp|reset-password|token|audit}`.
+- Three admins provisioned + verified live (crohrbach@teleia.ch,
+  lrohrbach@teleia.ch, christine.rohrbach@hotmail.com).
+
 ## 2.0.48 - 2026-05-22
 
 ### Security — full backend lockdown (6 audit rounds, ~40+ vulnerabilities closed)
