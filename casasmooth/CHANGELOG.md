@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.50 - 2026-06-07
+
+### Fix — template integration off the deprecated `platform:` key
+
+Home Assistant core (2026.6) no longer supports configuring the template
+integration via the legacy `sensor: - platform: template` /
+`switch: - platform: template` keys.
+
+- All real template sensors/switches already used the modern `template:`
+  integration; only the internal dummy entities
+  (`cs_dummy_sensor_to_avoid_errors`, `cs_dummy_switch_to_avoid_errors`)
+  were still emitted as legacy `- platform: template`.
+- Those dummies are now generated under the modern `template:` integration,
+  and `cs_sensor.yaml` / `cs_switch.yaml` are emitted as valid empty lists.
+- No functional change for end users; clears the "Unsupported YAML
+  configuration for the template integration" repair warning.
+
 ## 2.0.49 - 2026-05-24
 
 ### Security — Round 7 + Round 8 + Round 8 Niveau 2
