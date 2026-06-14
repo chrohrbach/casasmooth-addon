@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.51 - 2026-06-14
+
+### Fix — Enhanced lighting: false-occupancy guard + illuminance-based turn-off
+
+Two lighting reliability fixes, already validated in production.
+
+- **False-occupancy guard**: every sensor-driven lighting trigger
+  (motion, occupancy, presence, door/open, camera, TV) now requires
+  `trigger.entity_id is defined` **and** `is_state(trigger.entity_id, 'on')`
+  before acting. This stops automations from firing on an undefined or
+  stale trigger context, which could switch lights on without a real
+  detection.
+- **Illuminance-based turn-off (hysteresis)**: new per-area automation
+  that turns auto-lit lights off once ambient `avg_illuminance` rises above
+  the turn-on threshold × 1.3. Closes the gap where a presence-gated zone
+  kept its lights on indefinitely in broad daylight (the enhanced ON path
+  only adds light and the regular OFF path only reacted to timer/sustained
+  sensor-off). The 1.3 hysteresis margin prevents on/off oscillation, and
+  the automation only acts in presence-gated mode while the lights are still
+  owned by `auto` (never fighting a manual or scene override).
+
 ## 2.0.50 - 2026-06-07
 
 ### Fix — template integration off the deprecated `platform:` key
