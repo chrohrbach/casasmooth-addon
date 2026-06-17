@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.52 - 2026-06-17
+
+### Maintenance
+
+- Version bump, no functional changes.
+
 ## 2.0.51 - 2026-06-14
 
 ### Fix — Enhanced lighting: false-occupancy guard + illuminance-based turn-off
