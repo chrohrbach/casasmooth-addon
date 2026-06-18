@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.53 - 2026-06-18
+
+### Fix — Security sensors & phantom-entity warnings
+
+- **Home security section parity**: the per-area "security sensors" section on
+  the home dashboard now exposes the same categories as the dedicated security
+  view, from a single source of truth
+  (`DashboardBase.SECURITY_SENSOR_CATEGORIES`). Door/window open sensors — plus
+  water, smoke, vibration, gas, CO, tamper and noise sensors — were previously
+  missing from the home view (only motion/occupancy/presence were shown).
+- **Automatisations warning triangle removed**: each area's "Automatisations"
+  placeholder no longer references `input_button.cs_<area>_empty_button`, an
+  entity that is never created. Home Assistant rendered it as an "unavailable"
+  warning (⚠️) in every area whose automation buttons are gated off (e.g. no
+  lighting subscription). The placeholder is now an inert, entity-less tile.
+- **Broken Low Disk Alert automation removed**: "CS - System - Low Disk Alert"
+  triggered on `sensor.cs_ha_host_disk_free`, an entity that is never created,
+  so HA flagged it as an unknown-entity error and it never fired. Low-disk
+  alerting is already covered by "CS - System - Storage Problem Detection"
+  (`sensor.system_monitor_disk_use`).
+
 ## 2.0.52 - 2026-06-17
 
 ### Maintenance
