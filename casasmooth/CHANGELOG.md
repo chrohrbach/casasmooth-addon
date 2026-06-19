@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.54 - 2026-06-19
+
+### Fix — Shelly detached mode: protect Zigbee bulbs behind wall switches
+
+- **Detached wall_switch detection**: new `get_detached_wall_switches()` in the
+  registry identifies Shelly switches that coexist with Zigbee/smart lights in
+  the same area. Detection uses the Shelly `select.*_switch_type` entity
+  (detached/momentary) when available, falling back to a device-id heuristic
+  (wall_switch on a different device than the area's `light.*` entities).
+- **Relay exclusion from lighting actions**: detached wall_switches are excluded
+  from `_build_lighting_turn_on_actions`, scene save/restore, and the wallswitch
+  toggle automation targets. HA no longer sends `turn_off` to the Shelly relay
+  when a Zigbee bulb sits behind it — preventing mesh disconnection.
+- **Relay guard automation**: a per-switch `CS - Relay Guard - <name>` automation
+  re-enables the relay within 2 seconds if it is turned off accidentally (power
+  glitch, firmware reset, manual override), keeping the Zigbee bulb powered.
+- Wall_binary_sensor triggers (physical button press) continue to work unchanged
+  — they toggle the area's `light.*` / bulbs / relay-mode switches only.
+
 ## 2.0.53 - 2026-06-18
 
 ### Fix — Security sensors & phantom-entity warnings
