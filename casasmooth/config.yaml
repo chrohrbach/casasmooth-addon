@@ -21,6 +21,10 @@ init: false
 startup: application
 boot: auto
 
+# host_network is required for the Matter bridge so mDNS multicast (UDP 5353)
+# reaches the local network. Without it, Google Home cannot discover the bridge.
+host_network: true
+
 map:
   - config:rw
   - ssl:ro
@@ -30,9 +34,11 @@ map:
 ports:
   28100/tcp: 28100
   8003/tcp: 8003
+  5540/udp: 5540
 ports_description:
   28100/tcp: "casasmooth API Server"
   8003/tcp: "casasmooth MCP Server"
+  5540/udp: "Matter Bridge (mDNS + commissioning)"
 
 ingress: true
 ingress_port: 28100
