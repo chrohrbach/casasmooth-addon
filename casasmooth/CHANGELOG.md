@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.55 - 2026-06-23
+
+### Matter bridge upgrade & admin translations
+
+- **Matter 1.4 support**: upgrade `@matter/node` from 0.12 to 0.16 — supports
+  Matter 1.4.2 spec (new device types: EV chargers, water heaters, appliances,
+  Scenes Management cluster, OTA updates). Explicit `colorTempPhysicalMinMireds`
+  / `colorTempPhysicalMaxMireds` set for ColorTemperatureLightDevice (required
+  by Matter 1.4, defaults were removed).
+- **Matter bridge in dev_mount mode**: `run.sh` now runs `npm install` once on
+  first boot in dev mode so the Matter bridge works without a Docker image
+  rebuild. Stamp file prevents re-running on every restart.
+- **Admin dashboard translations**: added 11 missing translation keys for the
+  Services, Maintenance, and Matter sections (5 languages). Matter section now
+  shows an explanatory text when the bridge is not running instead of a blank
+  space.
+
 ## 2.0.54 - 2026-06-19
 
 ### Fix — Shelly detached mode: protect Zigbee bulbs behind wall switches
