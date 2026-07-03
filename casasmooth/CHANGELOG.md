@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.0.56 - 2026-07-04
+
+### Fix — deferred Home Assistant Core restart lost after cooldown
+
+- **Root cause**: the add-on runs with `startup: application`, so Home
+  Assistant Core always finishes loading `configuration.yaml` before this
+  add-on even starts. `cs_update` regenerates the file and asks Core to
+  restart to pick up changes (e.g. `http.trusted_proxies`) — but if that
+  restart was deferred by the 10-minute cooldown, it was lost forever: the
+  next `cs_update` run sees no NEW file diff (it already wrote the fix) and
+  never re-requests the restart. Symptom: HA rejects every tunneled request
+  with `400: Bad Request` / `Received X-Forwarded-For header from an
+  untrusted proxy`, indefinitely, until an unrelated restart happens to occur.
+- **Fix**: a persisted `cache/cs_pending_restart.json` marker now survives
+  across runs. Any restart deferred by cooldown is retried on every
+  subsequent `cs_update` — independent of file-diff detection — until it
+  actually succeeds, then the marker is cleared.
+
 ## 2.0.55 - 2026-06-23
 
 ### Matter bridge upgrade & admin translations
