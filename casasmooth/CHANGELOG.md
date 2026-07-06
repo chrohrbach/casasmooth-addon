@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.58 - 2026-07-06
+
+### Fix — `sgr-commhandler` (SmartGridReady Modbus/EID library) was never installed in production
+
+- **Root cause**: `sgr_service.py` has depended on the `sgr-commhandler` PyPI
+  package since it was introduced (Modbus TCP / REST device control via EID
+  XML profiles — `_connect_device`, `_resolve_eid`, etc.), but the package
+  was declared **nowhere** in the real install pipeline: absent from
+  `pyproject.toml` `[project.dependencies]`, absent from the addon's
+  `addon/build/Dockerfile.production` `pip3 install` list (the one actually
+  used to build the production image via `.github/workflows/build_addon.yml`),
+  and absent from `install_deps.sh` (which only installs other HA add-ons —
+  Mosquitto, SSH, Whisper, Piper — no pip packages). It only appeared in a
+  docstring comment (`Requires: pip install sgr-commhandler>=0.5.0`).
+  `SGrService.__init__` defensively catches the resulting `ImportError` and
+  silently sets `available = False` — so instead of a loud crash, every SGr
+  Modbus/EID feature was quietly a no-op in every production install. No
+  Modbus/EID device (Fronius, WAGO, Kostal included) was ever proven
+  functional through SGr; the test suite didn't catch it because every SGr
+  test mocks `sgr_commhandler` via `sys.modules` instead of using the real
+  package.
+- **Fix**: added `"sgr-commhandler>=0.5.0"` to `pyproject.toml` and to the
+  `pip3 install` list in `addon/build/Dockerfile.production`.
+- **Test**: added `TestRealPackageInstalled` to
+  `app/tests/test_sgr_library_integration.py` — the only test class in the
+  SGr suite that does NOT monkeypatch `sgr_commhandler`, so a future
+  packaging regression fails loudly instead of hiding behind mocks.
+
 ## 2.0.57 - 2026-07-06
 
 ### Fix — offboarding (factory reset / device cleanup) was non-functional end-to-end
