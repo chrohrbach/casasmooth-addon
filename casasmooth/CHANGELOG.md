@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.59 - 2026-07-06
+
+### Fix — SGr audit fixes (claims summary, read_sync, MQTT connect, optimizer proxy guard)
+
+- `sgr_rules_engine`: claims summary was reading the wrong JSON key
+  (`devices` instead of `claims`), so it stayed stuck reporting "no claims";
+  guarded the optimizer watts override from clobbering virtual proxy
+  SG-Ready states.
+- `sgr_service`: added the missing `read_sync` method (the MQTT bridge
+  referenced it, but only the mock implementation had it — real devices
+  never actually synced); capture the connect-time event loop for
+  cross-thread dispatch.
+- `server.py`: the MQTT bridge now calls `connect_all()` on devices before
+  announce/publish (was always iterating 0 connected devices); aligned the
+  4 inline `sgr_audit.json` event writers to append+`[-288:]`, matching the
+  rules engine and readers.
+- Added regression test coverage for claims summary, `read_sync`, and the
+  optimizer proxy guard.
+
 ## 2.0.58 - 2026-07-06
 
 ### Fix — `sgr-commhandler` (SmartGridReady Modbus/EID library) was never installed in production
