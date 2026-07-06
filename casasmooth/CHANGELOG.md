@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.57 - 2026-07-06
+
+### Fix — offboarding (factory reset / device cleanup) was non-functional end-to-end
+
+- **Cloud API**: `factory_reset()` called two cloud endpoints
+  (`/api/tunnel/revoke`, `/api/systems/dissociate`) that didn't exist —
+  they 404'd silently and the function still reported success. Added both
+  routes (`app/api/tunnel.py`, `app/api/systems.py`), authenticated via the
+  system's own Bearer token. Fixed call order in `onboarding_service.py`
+  (dissociate before revoke — revoke invalidates the shared Bearer) and now
+  captures the cloud auth headers before wiping local tunnel state.
+- **HA dashboard**: "Nettoyer les appareils" / "Réinitialisation usine"
+  buttons only called `input_button.press` with no automation reacting —
+  pressing them did nothing. Added `rest_command.cs_factory_reset_run` /
+  `cs_cleanup_devices_run`, new loopback-only `/api/internal/factory_reset`
+  + `/api/internal/cleanup_devices` endpoints, and two new automations
+  wiring the buttons end-to-end. Factory reset now shows a native
+  confirmation dialog (irreversible action).
+- **Mobile app**: no UI existed at all for these actions. Added a
+  "Maintenance" section to Settings (cleanup devices + factory reset with
+  double confirmation).
+
 ## 2.0.56 - 2026-07-04
 
 ### Fix — deferred Home Assistant Core restart lost after cooldown
