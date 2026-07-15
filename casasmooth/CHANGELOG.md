@@ -1,5 +1,97 @@
 # Changelog
 
+## 2.0.60 - 2026-07-15
+
+### Feature — EMS: weather-service fallback, light/dark theme, restructure into 5 tabs
+
+- Weather card now falls back to the HA weather service, per-metric
+  (temperature/humidity/wind/pressure), whenever weather-flagged zone
+  sensors are missing wholly or partially — with a `source` marker and a
+  dimmed/tooltip treatment so fallback values are visibly distinguished
+  from real zone readings.
+- Added a self-contained light/dark theme toggle to the EMS mobile
+  dashboard (was always dark), independent of the app's separate 5-theme
+  picker — refactored `ems-view.css` onto CSS custom properties scoped to
+  `.ems-view`/`.ems-light`, persisted via `localStorage`.
+- Restructured the EMS dashboard into 5 tabs, added collapsible
+  (persisted) cards across all of them, weather history as a ranged chart
+  aligned to the energy timeline, richer real recommendations, help
+  pastilles with tap popovers, expert mode, and a link to the hosted GRD
+  simulator from the Réseau (grid) tab.
+
+### Feature — GRD (grid operator) remote simulator, phases 0-5
+
+- Per-system opt-in gate for remote GRD signal simulation, propagated via
+  heartbeat; `sgr_webhook_token` now authenticates simulator signals over
+  the tunnel; bridled duration/priority for simulator-originated signals;
+  cloud-api OTP + signal relay + audit poll; real `grd_simulator.py`
+  dashboard UI ported to casasmooth.net/grdsimulator, with a remote-sim
+  opt-in tile and fixed silent send failures.
+
+### Feature — Fleet Portal (multi-tenant / building-manager self-service)
+
+- Generalized `Building` into `FleetGroup` with a login-capable manager;
+  added a self-service Fleet Portal app with a real MFA challenge flow;
+  group-level services override (additive, admin/portal-only), unified
+  ownership-change handling, and automatic subscription cancellation on
+  handover; server-side and admin-endpoint activation scripts for
+  granting/revoking fleet-manager access.
+
+### Feature — KNX (.knxproj) import tool
+
+- Added an ETS project import tool with review/apply/rollback, redesigned
+  onto EMS's visual language; fixed a missing `aiofiles` dependency and
+  made the area-picker degrade gracefully when ETS data is incomplete.
+
+### Feature — casasmooth intent triggers (purpose-specific automation events)
+
+- Added 26 intent triggers across security, presence/access, energy/EV,
+  and comfort domains, backed by a single-source-of-truth manifest and
+  codegen (`intent_triggers.json` → `triggers.yaml`/`strings.json`/
+  translations); migrated `telemetry.py`, `occupancy.py`, `scheduler.py`,
+  and `cs_load_shift.py` onto the new `fire_intent_event()` helper. All
+  verified live on `.149`.
+
+### Fix — `cs_car` dashboard didn't recognize/display OBD-bridge or
+multi-vehicle setups (6-commit cascade, all verified live on `.149`)
+
+- The vehicle-presence gate only matched EV-with-battery-style entities;
+  now recognizes anything in the `ev`/`car` registry dashboard groups, so
+  OBD-bridge-only vehicles (no native cloud integration) are picked up.
+- Fixed phone-consolidation logic that was silently discarding a second
+  real vehicle's data behind the single Android-Auto-consolidated tile.
+- Tiles are now always labelled with their device name when more than one
+  source shares a metric category, and the whole page/sections/toggles are
+  named after a real vehicle (native integration or OBD bridge), never a
+  paired phone.
+- Phone/Android-Auto tiles are dropped entirely once any real vehicle
+  exists, instead of being relabeled.
+- Empty category cards and their now-pointless show/hide toggles are
+  hidden live via HA visibility conditions (registry has no live entity
+  state to decide this at build time).
+
+### Fix — SGr, tunnel, migration, deploy reliability
+
+- `tunnel_service`: never permanently give up after a crash-loop.
+- Migration 096's revision id was too long and crash-looped `cloud-api` on
+  deploy; shortened it.
+- `sgr_kpi()` crashed on `period=month/year/all` (referenced undefined
+  config); `deploy-all`'s website health probe now shares the `.ps1`
+  fallback; docker-compose v1 `ContainerConfig` `KeyError` on website
+  recreate fixed by routing nginx at compose aliases instead of container
+  names.
+
+### Refactor — split `server.py` / `cloud_api` god-objects into routers
+
+- Extracted `sgr_ems`, `mobile_api`, `semantic_exposure`, `assistant_chat`,
+  `ai_automation_api`, `onboarding`, `validation_api`, `diagnostics_api`,
+  `matter_bridge`, `floorplan_3d` (HA addon side) and `content_marketing`,
+  `auth_users`, `contacts_tickets`, `admin_systems`/`admin_services`,
+  `crm_billing`, `blog`, `landings`, `website_catalog`, `llm_config`, and
+  the telemetry router (cloud-api side) into standalone modules; split
+  `cs_automations.py` into domain modules. Internal only — no behavior
+  change intended.
+
 ## 2.0.59 - 2026-07-06
 
 ### Fix — SGr audit fixes (claims summary, read_sync, MQTT connect, optimizer proxy guard)
