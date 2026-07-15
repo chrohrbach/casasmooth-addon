@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.61 - 2026-07-15
+
+### Fixed — remote-access tunnel: never permanently give up on crash-loop
+
+- `tunnel_service`'s `frpc` supervisor used to exit for good after 5 fast
+  login failures in a row, on the assumption that the HA addon supervisor
+  would restart the parent process. Nothing actually monitors this
+  fire-and-forget subprocess, so a transient cloud-api blip during a
+  reconnect attempt could kill remote-access connectivity permanently
+  until the next full addon restart or update. Now it cools down for
+  15 minutes and resumes retrying instead of exiting.
+
 ## 2.0.60 - 2026-07-15
 
 ### Feature — EMS: weather-service fallback, light/dark theme, restructure into 5 tabs
