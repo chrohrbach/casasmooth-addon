@@ -186,6 +186,56 @@ export LOG_LEVEL="${LOG_LEVEL}"
 bashio::log.info "SUPERVISOR_TOKEN: $([ -n "${SUPERVISOR_TOKEN}" ] && echo 'Available' || echo 'NOT available – API calls will fail')"
 
 # ---------------------------------------------------------------------------
+# First-real-boot identity individualization.
+#
+# Must run BEFORE cs_update below: cs_update's setup_directories() loads the
+# guid and sends the first outbound cloud call (POST /api/secrets) within a
+# few lines of each other, and the tunnel service (spawned later by the API
+# server) will skip cloud provisioning entirely and silently reuse a cached
+# identity if /data/tunnel/frpc.toml already exists (tunnel_service.py:624).
+# Both are too late/too dangerous to gate after the fact — this has to be
+# the very first thing that can touch identity state on this boot.
+#
+# Why this exists: casasmooth's GUID *is* Home Assistant's own instance uuid
+# (.storage/core.uuid, ARCHITECTURE.md §12) — a pure software value with no
+# hardware binding, persisted forever once generated. Teleia ships SD cards
+# with HA + csadmin + this addon already installed (a genuinely blank golden
+# image would be safer but isn't acceptable for prep-time reasons), so a
+# naively cloned card would silently duplicate a live system's identity —
+# exactly the incident this guards against.
+#
+# The marker (locals/cs_individualized) must be ABSENT from the golden image
+# itself — deleted as the last step of image preparation (see the
+# "Prepare for Cloning" dashboard button in the casasmooth repo,
+# app/services/onboarding_service.py::prepare_for_cloning(), which also
+# deletes the same four paths below). Whichever happens first — this boot
+# hook individualizing fresh, or a deliberate restore action adopting an
+# existing identity from a backup — sets the marker; the other becomes a
+# no-op. A restore action always writes the marker itself and may run AFTER
+# this hook already individualized fresh on first boot — that's expected,
+# restore deliberately overwrites whatever identity this hook assigned.
+#
+# Deletion order matters for crash-safety: the tunnel/services caches (the
+# files that let the tunnel service skip cloud provisioning and silently
+# resume a stale identity) are cleared BEFORE core.uuid, and the marker is
+# written LAST of all. A power-loss at any point during this leaves the
+# system still looking "not yet individualized" on the next boot — never a
+# stale-but-internally-consistent identity. Deleting an already-deleted file
+# is a no-op, so re-running this whole block on retry is always safe.
+# ---------------------------------------------------------------------------
+INDIVIDUALIZED_MARKER="${CS_PATH}/locals/cs_individualized"
+if [ ! -f "${INDIVIDUALIZED_MARKER}" ]; then
+    bashio::log.info "First real boot on this hardware — individualizing identity..."
+    rm -f "${CS_PATH}/locals/cs_tunnel_token" 2>/dev/null || true
+    rm -f "/data/tunnel/frpc.toml" 2>/dev/null || true
+    rm -f "${CS_PATH}/locals/cs_services.json" 2>/dev/null || true
+    rm -f "/config/.storage/core.uuid" 2>/dev/null || true
+    mkdir -p "${CS_PATH}/locals"
+    touch "${INDIVIDUALIZED_MARKER}"
+    bashio::log.info "Identity wiped — HA will generate a fresh core.uuid, casasmooth will re-provision a fresh tunnel token, on this boot."
+fi
+
+# ---------------------------------------------------------------------------
 # Run cs_update (first boot OR version upgrade)
 # On first boot this generates all YAML, copies resources → /config/www/,
 # copies custom_components, writes configuration.yaml includes, etc.
