@@ -30,6 +30,14 @@ map:
   - ssl:ro
   - media:rw
   - share:rw
+  # Required by BackupManager._create_tarball (Matter/Z-Wave/Deconz/Frigate/
+  # Zigbee2MQTT state under /addon_configs) and apply_restore's unpacking.
+  # Without this mapping /addon_configs simply doesn't exist inside the
+  # container (confirmed via docker inspect on .149, 2026-07-17): the backup
+  # whitelist silently skipped every addon_includes entry since the
+  # 2026-04-19 whitelist rewrite, and a restore would have written those
+  # files into the container's ephemeral overlay — lost on restart.
+  - all_addon_configs:rw
 
 ports:
   28100/tcp: 28100

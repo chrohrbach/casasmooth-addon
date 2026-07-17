@@ -225,14 +225,56 @@ bashio::log.info "SUPERVISOR_TOKEN: $([ -n "${SUPERVISOR_TOKEN}" ] && echo 'Avai
 # ---------------------------------------------------------------------------
 INDIVIDUALIZED_MARKER="${CS_PATH}/locals/cs_individualized"
 if [ ! -f "${INDIVIDUALIZED_MARKER}" ]; then
-    bashio::log.info "First real boot on this hardware — individualizing identity..."
-    rm -f "${CS_PATH}/locals/cs_tunnel_token" 2>/dev/null || true
-    rm -f "/data/tunnel/frpc.toml" 2>/dev/null || true
-    rm -f "${CS_PATH}/locals/cs_services.json" 2>/dev/null || true
-    rm -f "/config/.storage/core.uuid" 2>/dev/null || true
+    # CRITICAL SAFETY RULE: the ONLY reliable local signal that this hardware
+    # needs a fresh identity is an ABSENT /config/.storage/core.uuid — that is
+    # exactly what the "Prepare for Cloning" button (prepare_for_cloning())
+    # leaves behind before a golden image is captured. A PRESENT core.uuid is
+    # ALWAYS kept: we cannot locally distinguish a raw (un-prepped) clone from
+    #   (a) an ordinary fresh install whose HA-generated uuid is already unique, or
+    #   (b) an existing, long-running customer system that simply predates this
+    #       marker file (which is absent on 100% of systems the first time this
+    #       version boots) —
+    # and regenerating an ESTABLISHED core.uuid would orphan that system's cloud
+    # subscription, tunnel and billing (its guid IS its core.uuid). So a present
+    # uuid is never touched; raw clones made WITHOUT the Prepare-for-Cloning
+    # button remain the operator's responsibility (documented).
+    if [ ! -f "/config/.storage/core.uuid" ]; then
+        bashio::log.info "core.uuid absent (prepared-for-cloning image) — generating a fresh identity..."
+        rm -f "${CS_PATH}/locals/cs_tunnel_token" 2>/dev/null || true
+        rm -f "/data/tunnel/frpc.toml" 2>/dev/null || true
+        rm -f "${CS_PATH}/locals/cs_services.json" 2>/dev/null || true
+
+        # HA Core started before this addon (startup: application). It may not
+        # have lazily regenerated core.uuid yet — if the file is still missing
+        # when cs_update runs below, cs_update reads no guid and runs the whole
+        # boot as guid="no-guid" (no cloud registration, no tunnel, wrong
+        # csadmin password) until a manual reboot. Restart Core now and wait
+        # for a fresh on-disk core.uuid before letting cs_update load the guid.
+        if [ -n "${SUPERVISOR_TOKEN}" ]; then
+            bashio::log.info "Restarting Home Assistant Core to generate a fresh instance uuid..."
+            curl -sf -X POST -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+                http://supervisor/core/restart >/dev/null 2>&1 || \
+                bashio::log.warning "Core restart request failed — continuing anyway."
+            WAITED=0
+            until [ -f "/config/.storage/core.uuid" ] || [ "${WAITED}" -ge 180 ]; do
+                sleep 5
+                WAITED=$((WAITED + 5))
+            done
+            if [ -f "/config/.storage/core.uuid" ]; then
+                bashio::log.info "Fresh core.uuid generated after ${WAITED}s."
+            else
+                bashio::log.warning "core.uuid still absent after ${WAITED}s — this boot may run without a guid until the next restart."
+            fi
+        else
+            bashio::log.warning "No SUPERVISOR_TOKEN — cannot restart Core; this boot may run without a guid until the next restart."
+        fi
+        bashio::log.info "Fresh identity ready — casasmooth will provision a fresh tunnel token this boot."
+    else
+        bashio::log.info "Existing core.uuid preserved — marking individualized without changing identity."
+    fi
+
     mkdir -p "${CS_PATH}/locals"
     touch "${INDIVIDUALIZED_MARKER}"
-    bashio::log.info "Identity wiped — HA will generate a fresh core.uuid, casasmooth will re-provision a fresh tunnel token, on this boot."
 fi
 
 # ---------------------------------------------------------------------------
