@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.62 - 2026-07-22
+
+### Fixed — dashboard gating & cleanup on freemium/empty installs
+
+- EMS dashboard is now gated on `enhanced_energy`. It used to be generated
+  unconditionally and appeared in the sidebar even on freemium, where it
+  has no data to drive (it is the active energy-management product: SGr
+  device control, load-shifting, cost-of-mix). Returning no view makes the
+  generator skip the whole `cs-ems` dashboard, so the staging→prod prune
+  removes it from the sidebar too.
+- System view no longer renders a "No WOL device defined" empty-state card.
+  Wake-on-LAN (an `enhanced_base` feature) now shows its settings toggle,
+  settings tile and section together — or all three are omitted when the
+  install has no WOL entities. No stray card/toggle on freemium.
+- Dropped the `cs_dummy_switch_to_avoid_errors` template switch. It had no
+  backing `input_boolean`, was referenced by nothing, and surfaced as a
+  stray switch entity on empty installs. The dummy *sensor* is kept — it is
+  the source for the utility_meter/integration stubs and already keeps the
+  modern `template:` list non-empty.
+- Removed the dead "Setup guide" link (`manuals#getting-started`, a page
+  that does not exist) from the empty-system Welcome panel.
+
 ## 2.0.61 - 2026-07-15
 
 ### Fixed — remote-access tunnel: never permanently give up on crash-loop
