@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.63 - 2026-08-06
+
+### Fixed — a stale cloud rules payload could silently disable whole categories
+
+- The rules-service was serving 227 categories against the 278 shipped in
+  `app/data/cs_rules.csv`. Outside development mode the generator overwrites
+  `locals/cs_rules.csv` with that payload at every update, so 51 categories
+  were absent on any box that ran it — among them `glass_break_sensors`,
+  `gas_sensors`, `tamper_sensors` and `water_valves`. Every lookup keyed on
+  those names returned an empty list, so the glass-break, gas and tamper
+  handling and the water cut-off alert had nothing to act on. Nothing failed
+  loudly, which is why it went unnoticed.
+- The fetch now compares the incoming payload against the bundled categories
+  and **refuses** one that loses any of them, keeping the rules shipped with
+  the deploy. The service stays free to *add* categories — that is its purpose.
+- The service database itself was re-imported from the bundled CSV, so it
+  serves the full set again.
+
+### Changed — the category guard now covers every lookup
+
+- `test_category_names_exist.py` only checked two hand-maintained lists. It now
+  walks the AST of everything under `app/` and validates all 169 literal
+  `get_entit*_by_category` arguments, against both `cs_rules.csv` and the
+  categories `cs_registry` creates itself when reclassifying switches
+  (`bulbs`, `heaters`, `fans`, `power_outlets`). No dead literal lookup remains.
+- Known gap, tracked in `BACKLOG.md`: 38 call sites pass the category through a
+  variable and stay outside the guard.
+
 ## 2.0.62 - 2026-07-22
 
 ### Fixed — dashboard gating & cleanup on freemium/empty installs
