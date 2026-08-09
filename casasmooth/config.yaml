@@ -39,14 +39,28 @@ map:
   # files into the container's ephemeral overlay — lost on restart.
   - all_addon_configs:rw
 
+# With host_network above, the container shares the host's namespace and these
+# bindings are direct — Supervisor uses this list for conflict detection and for
+# the UI, not to forward. Declared all the same: it is where anyone reading the
+# manifest learns what the add-on opens on the customer's network.
 ports:
   28100/tcp: 28100
   8003/tcp: 8003
   5540/udp: 5540
+  8443/tcp: 8443
 ports_description:
   28100/tcp: "casasmooth API Server"
   8003/tcp: "casasmooth MCP Server"
   5540/udp: "Matter Bridge (mDNS + commissioning)"
+  # Local HTTPS. Terminates TLS with the system's own Let's Encrypt certificate
+  # for <lan_id>.lan.casasmooth.net and forwards to Home Assistant, so a phone
+  # on the same network gets a genuine secure context — the only condition
+  # under which a browser grants the microphone, and therefore the voice
+  # interface, without routing the audio through the cloud.
+  # Inert until a certificate is installed: nothing binds, nothing fails, and
+  # remote access falls back to the tunnel. See app/services/lan_tls_proxy.py
+  # in the casasmooth repo.
+  8443/tcp: "casasmooth HTTPS local"
 
 ingress: true
 ingress_port: 28100
