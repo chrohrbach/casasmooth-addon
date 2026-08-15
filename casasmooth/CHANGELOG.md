@@ -1,5 +1,59 @@
 # Changelog
 
+## 2.0.64 - 2026-08-15
+
+### Fixed — fresh installations no longer lock the installer out
+
+- **The `csadmin` support account was never created on a freshly imaged box.**
+  On a fresh clone `cs_update` regenerates its config while Home Assistant is
+  still in recovery mode — before the box UUID exists — so it baked the
+  placeholder `no-guid` into the GUID the internal calls carry. Every
+  guid-authenticated call, including the boot-time `csadmin` sync, was then
+  rejected (403) and the account never appeared. The add-on now publishes the
+  real GUID and ensures `csadmin` in-process as soon as the box has an identity,
+  retrying until Home Assistant's API is ready.
+- **A freshly cloned box could get stuck in recovery mode indefinitely.** A
+  Core restart requested too early (while Core was still doing its first boot)
+  failed silently and was never retried, leaving the box in recovery with no
+  usable config. Failed restarts are now recorded and retried, and the add-on
+  forces a single Core restart as a backstop if the box has not left recovery.
+
+### Fixed — security & gold hygiene
+
+- Factory-reset and tenant-reset endpoints now require a real credential (a
+  forged `context=lovelace` marker is no longer accepted).
+- Closed a path where the `casasmooth_proxy` component could relay owner-only
+  internal endpoints from the public tunnel.
+- The golden image is now depersonalised at capture: household accounts,
+  credentials, refresh tokens and the tunnel state are stripped, so a clone
+  boots with a clean identity instead of inheriting the source unit's.
+
+### Fixed — the nightly update no longer runs stale code
+
+- The 02:00 regeneration ran inside the long-lived add-on process, using the
+  modules imported at boot rather than the code on disk. After a deploy without
+  an add-on restart it could re-emit pre-fix configuration (this is what pushed
+  an office shutter to 100 % overnight). It now runs as a subprocess against the
+  on-disk code, and `cs_deploy` decides the restart from the last deployed SHA.
+
+### Changed — per-shutter calibration model
+
+- Shutter control moved from a single inversion flag to a **coverage %** driven
+  by two per-shutter position anchors (clear / covered), so both normal and
+  reverse-counting shutters are handled by the same mapping. Fresh boxes get
+  safe defaults (full travel, non-inverted). ⚠️ **On an upgrade, a shutter that
+  was configured as inverted may move the wrong way until its two anchors are
+  set** — recalibrate any automated/inverted shutter after updating.
+
+### Added / improved
+
+- Mobile app: casasmooth brand theme, voice assistant integrated into every tab
+  (the eye overlays on the mic), real-scale 3D floor plan with hover tooltips,
+  tap-to-toggle on touch and swipe between tabs, broader i18n.
+- Loxone integration vendored (LAN-only, opt-in — dormant unless provisioned).
+- Numerous SmartGridready, EMS, MCP, notifications, PWA/Web Push and translation
+  fixes.
+
 ## 2.0.63 - 2026-08-06
 
 ### Fixed — a stale cloud rules payload could silently disable whole categories
