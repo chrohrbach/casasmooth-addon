@@ -1,5 +1,94 @@
 # Changelog
 
+## 2.0.65 - 2026-08-16
+
+### Fixed — the energy model now measures the house, not the inverter's guess
+
+- **House consumption can now be derived at the grid connection point.** On
+  installations whose inverter publishes no consumption (a meter-less Huawei
+  SUN2000 is the pilot case), the house total is derived from the energy
+  balance: `PV + import − export − battery`, clamped at zero. Previously such
+  installations simply had **no** consumption figure at all.
+- **A Modbus meter (whatwatt Go and any Chemin-2 device) becomes real HA
+  entities — without SGr.** Declared metering points are read every minute and
+  published as sensors, deliberately not gated by `enhanced_energy`: a meter is
+  measurement infrastructure, not an optimisation feature. The meter's active
+  power is routed to the grid category, closing the loop for the derivation
+  above. (Also fixed on the way: the whatwatt EID counts in Wh, not kWh.)
+- **The SGr optimizer believed the house consumed zero.** It read two entities
+  that have never existed, so PV surplus was computed as `pv − 0` — measured
+  1983 W instead of 1097 W on the reference box. It now resolves the real
+  aggregate names.
+- **Sensors reporting kilowatts were counted a thousand times too low.** Unit
+  rules match `kW` as well as `W` (by design — inverters differ), but the power
+  aggregates summed raw values without unit conversion, so a 3.5 kW producer
+  contributed 3.5 "watts". Aggregation now converts per-entity from the unit
+  the registry declares, and a non-power unit that slips into a power category
+  is excluded and logged instead of corrupting the total.
+- **Schedules and sessions could be dead letters.** When a consumer's
+  `consumer_id` could not be resolved directly it is now recovered through the
+  switch-entity helpers.
+
+### Fixed — a boiler can no longer be optimised into staying cold
+
+- A **sanitary floor** guarantees minimum hot-water comfort regardless of what
+  the optimiser decides, and suspends itself while the household is away.
+- The energy schedule is now a **real window**: SGr is free to act outside it
+  and no longer abandons the schedule when the Auto toggle is off.
+- Unified precedence: the toggle says whether a device is controlled at all,
+  `cs_energy` decides, SGr fills the gaps. Matter overrides are temporary
+  again, a manual grace is persisted across restarts, and a watchdog alerts
+  when a consumer keeps a schedule that nothing applies anymore.
+
+### Fixed — fresh boxes on HA 2026.8 no longer greet the tunnel with a 400
+
+- HA 2026.8 ignores the YAML `http:` block after its one-shot migration, so a
+  freshly onboarded box rejected the tunnel as an untrusted proxy. The
+  `trusted_proxies` configuration is now applied through the WebSocket store,
+  with a version guard that skips boxes still below 2026.8.
+
+### Fixed — rules engine: dead lookups, dead rules, and a caller with a name
+
+- Several features silently targeted categories that do not exist: AI shutter
+  actions resolved **no entities** in any area, areas with only reclassified
+  bulbs got no scene automations, frigate camera switches were filed under
+  lighting, and one AI-text rule sat unreachable behind the MQTT catch-all.
+  All fixed; two dead duplicate rules removed (452 → 450).
+- The unknown-category warning now names **file, line and function of the
+  caller**, turning a day of stack-trace hunting into reading one log line.
+- The MQTT fallback category for a manual cover no longer resurrects the
+  retired `covers` name — those entities land in `shutters` and stay visible.
+- The companion sidecar rules follow the app's strategy change: the two
+  surviving entities (`phone_last_seen`, `phone_app_health`) are categorised
+  again instead of falling into the catch-all.
+
+### Added — integrations
+
+- **Nuki**: `nuki_ng` is vendored (its callback speaks plain HTTP toward the
+  Bridge even when `internal_url` is HTTPS, and it no longer fights for the
+  bridge's callback slot 0). Existing core-`nuki` installations are adopted
+  **automatically at startup** — entities are regenerated and re-assigned to
+  their areas, no manual step.
+- **Loxone**: onboarding path for the Miniserver — cs-api endpoints
+  (`/api/loxone/connect|status`), SSDP/UDP discovery pre-filling the IP, and a
+  mobile onboarding view (`?view=loxone`; view still untested on-device).
+- **`vendor/` is actually inside the add-on image now.** Without this, every
+  `<name>_enabled` flag (smartme, bermuda, loxone, nuki_ng…) was a silent
+  no-op on production boxes: `cs update` copied nothing and said nothing.
+- Administration dashboard: a registry of mobile views with a
+  "Consoles & tools" card.
+
+### Added — twin & tooling (does not ship on boxes, but proves what does)
+
+- The Energie Thun digital twin (VM 331) runs the full chain end to end: real
+  FusionSolar production (first production validation of the Kiosk client)
+  drives the simulated grid meter, so `house = PV + import − export` is now
+  verified against a curve a real roof produced.
+- The rules CSV and the cloud rules-service are kept honest by a read-only
+  drift probe (repo ↔ service, categories, rules **and order** — first match
+  wins, so order is semantic), a portal card, and a permanent pattern sweep
+  in the test suite. Publication remains a deliberate act.
+
 ## 2.0.64 - 2026-08-15
 
 ### Fixed — fresh installations no longer lock the installer out
