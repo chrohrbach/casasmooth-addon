@@ -1,5 +1,55 @@
 # Changelog
 
+## 2.0.66 - 2026-08-17
+
+### Intégrations avancées activables depuis le tableau de bord
+
+- **Nouveaux interrupteurs dans Administration → « Consoles »** pour activer ou
+  désactiver **Loxone, Bermuda et smart-me** sans passer par la ligne de
+  commande. Activer une intégration l'installe, **redémarre la box** (~1–2 min),
+  et fait apparaître son raccourci (p. ex. « Connecter Loxone ») juste en
+  dessous. Garde-fou intégré contre la boucle de redémarrage au démarrage.
+- **La vue d'onboarding Loxone (`?view=loxone`) fonctionne enfin** : le bundle
+  mobile n'avait jamais été reconstruit avec elle (2.0.65 en livrait la source
+  sans le build). Bundle reconstruit ; la vue est listée dans la carte
+  « Consoles » dès que Loxone est activé.
+
+### Carte « Consoles » réparée
+
+- La section « Consoles & outils » était **inatteignable** (aucune tuile de
+  visibilité dans le panneau d'affichage) — corrigé.
+- Retrait des vues « Sécurité » et « Plan 3D » du registre : c'étaient des liens
+  morts.
+
+### Énergie
+
+- Carte des coûts réorganisée en **6 sections repliables**, avec une sentinelle
+  de cohérence en tête (5 langues) et l'indication du forfait d'injection.
+- Les sources du modèle énergétique (compteur, PV, batterie, consommation
+  publiée) se rendent enfin comme **tuiles** dans le panneau de zone.
+- Section Énergie enfin visible sur une **box neuve** (booléen de section qui
+  naissait à off — corrigé).
+- Capteurs `cs_*` qui naissaient sans nom lisible, et forfait d'injection pris à
+  tort pour une alerte — corrigés.
+
+### Assainissement (gold / clones)
+
+- `restore_state` filtré à la généralisation (c'était un canal de fuite
+  d'identité entre clones).
+- La Pico entre dans le modèle ; les clones **ne naissent plus « malades »**.
+
+### SGr / optimiseur
+
+- Une **fenêtre active** est lue comme contrainte dure dès le premier cycle
+  (plus de `manual_override` transitoire d'une heure).
+- L'adoption émet les points d'écriture du modèle 123.
+
+### Administration
+
+- Le nettoyage purge aussi les **zones vides** (après les appareils) ; message
+  de notification corrigé (« 1 zone vide supprimée »).
+- Vue vocale autonome rebasée sur le pipeline unique `useVoiceSession`.
+
 ## 2.0.65 - 2026-08-16
 
 ### Fixed — the energy model now measures the house, not the inverter's guess
