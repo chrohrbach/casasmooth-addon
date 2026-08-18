@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.68 - 2026-08-18
+
+Release corrective : le montage du pilote physique EnergieThun a mis au jour un
+bug qui rendait les intégrations vendorées ininstallables sur toute box released.
+
+### Intégrations vendorées (smart-me / bermuda / loxone / nuki_ng)
+
+- **`run.sh` synchronise enfin `vendor/` vers `/config/casasmooth`.** L'image
+  embarquait bien `vendor/` (depuis 2.0.66), mais le script de démarrage ne le
+  copiait pas du dossier image vers le dossier données, où `cs_update` le
+  cherche. Résultat : `nuki_ng` (inconditionnel) et les intégrations à drapeau
+  (smart-me/bermuda/loxone) n'étaient jamais installées — l'interrupteur
+  « activer l'intégration » du tableau de bord était un no-op silencieux. Une
+  ligne dans la boucle de sync. Le correctif `4e3e87b6f` (embarquer `vendor/`
+  dans l'image) n'avait traité que la moitié du problème.
+- Le scope du cache de build est remis à sa valeur d'origine : le suffixe `-g2`
+  ajouté la veille reposait sur un diagnostic erroné (le bug était dans `run.sh`,
+  pas dans le cache Docker — les images 2.0.67 contenaient `vendor/` au complet).
+
 ## 2.0.67 - 2026-08-18
 
 Release de correctifs, motivée par le montage du pilote physique EnergieThun :
