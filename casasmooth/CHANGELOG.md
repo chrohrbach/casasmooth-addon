@@ -2,7 +2,7 @@
 
 ## 2.0.68 - 2026-08-18
 
-Release corrective : le montage du pilote physique EnergieThun a mis au jour un
+Release corrective : le montage d'un pilote physique a mis au jour un
 bug qui rendait les intégrations vendorées ininstallables sur toute box released.
 
 ### Intégrations vendorées (smart-me / bermuda / loxone / nuki_ng)
@@ -21,9 +21,9 @@ bug qui rendait les intégrations vendorées ininstallables sur toute box releas
 
 ## 2.0.67 - 2026-08-18
 
-Release de correctifs, motivée par le montage du pilote physique EnergieThun :
+Release de correctifs, motivée par le montage d'un pilote physique :
 chaque défaut ci-dessous a été constaté sur du matériel réel (banc isolé, jumeau
-`.61`, chalet `.149`), pas en théorie.
+`.61`, box de développement `.149`), pas en théorie.
 
 ### Sécurité
 
@@ -204,7 +204,7 @@ chaque défaut ci-dessous a été constaté sur du matériel réel (banc isolé,
 
 ### Added — twin & tooling (does not ship on boxes, but proves what does)
 
-- The Energie Thun digital twin (VM 331) runs the full chain end to end: real
+- The pilot-site digital twin (VM 331) runs the full chain end to end: real
   FusionSolar production (first production validation of the Kiosk client)
   drives the simulated grid meter, so `house = PV + import − export` is now
   verified against a curve a real roof produced.
@@ -757,7 +757,7 @@ addon should pull and restart transparently.
   18:00, 22:00) was silently skipped: the boolean stayed `True` across
   the transition, so HA never re-evaluated UCV and the new scene's
   `restore_scene_<N>` button was never pressed.
-- **Observed on Lykke 2026-05-22**: s1→s2 at 09:00 was missed on all 7
+- **Observed on a client installation 2026-05-22**: s1→s2 at 09:00 was missed on all 7
   areas. Anne had to manually click `restore_scene_2` on each area at
   09:37 (and again 2 of 7 areas at 08:34 because the s1 batch had been
   partial). Same root cause across the whole client fleet using
@@ -790,7 +790,7 @@ addon should pull and restart transparently.
   transparent server-side; nginx → frps vhost routing is by host header
   only, also unaffected.
 - **Rollout**: `.149` (dev_mount) picks up the new template on next addon
-  restart. Real clients (Lykke, Etoy, Chalet, Domenbach, …) need this new
+  restart. Existing client installations need this new
   image; frps is restarted to purge phantom proxy registrations.
 
 ## 2.0.45 - 2026-05-22
@@ -992,7 +992,7 @@ addon should pull and restart transparently.
   source. The slider drives both the timer duration (timer-source zones)
   and the sustained-off `for:` duration (persistent-source zones), via a
   templated state trigger. Previously, persistent-only zones (atelier,
-  cave, garage, exterieur on Chalet) had a hardcoded 2-min extinction
+  cave, garage, exterieur on a real installation) had a hardcoded 2-min extinction
   and the slider was hidden — leading to UI inconsistencies and no way
   to tune the extinction window.
 - **Skip off-automation for no-trigger zones** (e.g. `deco`): previously
