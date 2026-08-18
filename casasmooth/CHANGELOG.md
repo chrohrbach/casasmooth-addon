@@ -1,5 +1,42 @@
 # Changelog
 
+## 2.0.69 - 2026-08-18
+
+Nouvelles intégrations d'appareils et outil de mise en service, plus deux
+passes d'analyse adverse sur tout le code de la session.
+
+### Intégrations d'appareils
+
+- **V-ZUG (électroménager) vendoré** (`vendor/vzug`, drapeau `vzug_enabled`,
+  toggle Admin) — gamme AdoraDish/Wash/Dry, API locale sans auth, découverte
+  DHCP native ; règles `cs_rules.csv` par `platform=vzug` + modèle.
+- **whatwatt Go en REST** — EID privé `whatwatt_go_local_rest.xml` lisant
+  `GET /api/v1/report`, sans activer Modbus par appareil. Marche sur toute unité
+  licenciée. Résolu depuis l'image (fallback `app/data` embarqué dans
+  `SGrService._resolve_eid`).
+- **PV hors bilan logement** — nouvelle catégorie `power_offsite_pv_sensors` :
+  production possédée mais qui n'alimente pas le logement (injection réseau
+  directe). Affichée, **exclue** du bilan et de l'auto-suffisance. Configurable
+  par label humain `csx_power_offsite_pv_sensors` (le classement par règle seul
+  n'ouvre pas la dérivation réseau).
+
+### Mise en service
+
+- **Scanner LAN généraliste** (`app/services/net_fingerprints.py`, endpoints
+  `POST /api/sgr/discover/fingerprint`) : identifie les appareils que
+  l'autodécouverte HA rate (whatwatt, V-ZUG, Shelly, Tasmota, smart-me).
+  Validé sur un vrai LAN. N'intègre rien — c'est un outil qui indique quel
+  chemin d'intégration suivre. Découverte SGr désormais joignable par le tunnel.
+
+### Corrections (analyse adverse ×2)
+
+- `_apply_label_overrides` lisait `category` au lieu de `cs_category` : un
+  correctif humain `csx_` n'écartait jamais l'entité de sa catégorie de règle
+  (bug préexistant, tout `csx_` concerné). Corrigé + test au niveau registre.
+- Divers durcissements du scanner (pas de redirection suivie, lecture bornée,
+  deadline effective, sonde V-ZUG non perturbante) et de l'EID whatwatt
+  (enveloppe `report.`, échelle en JSONata, puissance réseau signée).
+
 ## 2.0.68 - 2026-08-18
 
 Release corrective : le montage d'un pilote physique a mis au jour un
