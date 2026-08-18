@@ -1,5 +1,60 @@
 # Changelog
 
+## 2.0.67 - 2026-08-18
+
+Release de correctifs, motivée par le montage du pilote physique EnergieThun :
+chaque défaut ci-dessous a été constaté sur du matériel réel (banc isolé, jumeau
+`.61`, chalet `.149`), pas en théorie.
+
+### Sécurité
+
+- **`require_auth()` ne fait plus confiance à des signaux forgeables à travers
+  le tunnel.** Un en-tête `X-Casasmooth-Context: lovelace` (ou un referer
+  `/lovelace/`, ou `/local/mobile/`) faisait passer une requête sans jeton pour
+  une requête de confiance. Neuf routers en dépendaient ; ils délèguent
+  désormais à `compute_transport_trust()`, la même classification que le
+  middleware HTTP et les WebSockets, qui neutralise le contournement dès que le
+  `Host` révèle le tunnel. Portée réelle : LAN uniquement (le relais tunnel
+  avait déjà deux serrures depuis le 13.08), mais la duplication d'heuristiques
+  d'auth est fermée à la racine.
+
+### Accès distant
+
+- **Le frontend HA cesse de renvoyer 400 « untrusted proxy » à travers le
+  tunnel sur une box neuve.** Le correctif de proxy inverse se croyait en échec
+  et se désactivait après trois tentatives : il comparait `trusted_proxies`
+  comme des chaînes alors que HA les canonise en préfixes (`127.0.0.1` →
+  `127.0.0.1/32`). Toute box née d'un gold restait sans accès distant, en
+  silence.
+
+### Énergie
+
+- **Le tarif d'import peut enfin être réglé sur « aucun ».** L'option n'existait
+  que côté injection ; côté import, impossible d'arrêter de poller un endpoint
+  par-client (Swisspower) — deux box sur le même code se 429 mutuellement et
+  dégradent le vrai client. Choisir « aucun » coupe le fetch et efface la courbe
+  périmée (une courbe gelée est pire qu'aucune, elle a l'air vivante).
+- **`scipy` déclaré comme dépendance** : sans lui l'optimiseur SGr retombait en
+  silence sur une heuristique gloutonne qui ne modélise pas les accumulateurs
+  thermiques ni la bande de confort.
+
+### Tableau de bord
+
+- **Plus de « Entity not found » dans la météo dès que la maison est renommée.**
+  `weather.forecast_home` était codé en dur ; Met.no nomme l'entité d'après le
+  lieu, donc une box « Maison » a `weather.forecast_maison`. L'entité est
+  désormais résolue dynamiquement (cinq cartes, trois vues).
+- **Le dernier lien de l'onboarding pointe sur le tableau de bord casasmooth**
+  (`/cs-home/home`) et non plus sur `/lovelace`, vide sur une box casasmooth.
+
+### Assainissement (gold / clones)
+
+- **`core.config` neutralisé à la capture** : position GPS, nom du lieu et URLs
+  d'accès de la machine source ne partent plus dans chaque carte livrée. Une box
+  née d'un gold naissait aux coordonnées de l'intégrateur et calculait sa
+  prévision solaire pour le mauvais endroit, en silence. Les réglages produit
+  (unités, fuseau, devise, pays, langue) sont conservés.
+
 ## 2.0.66 - 2026-08-17
 
 ### Intégrations avancées activables depuis le tableau de bord
