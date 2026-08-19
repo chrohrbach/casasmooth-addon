@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.70 - 2026-08-19
+
+Renommage self-service du slug de tunnel depuis le dashboard Admin.
+
+- **Champ slug éditable** (carte Admin) : l'owner tape une URL courte
+  (`ent` → `ent.casasmooth.net`) et presse un bouton. Le box relaie au cloud,
+  qui impose le **format** et l'**unicité fleet-wide** (409 si déjà pris) ; le
+  verdict s'affiche en notification. La nouvelle URL route au prochain
+  redémarrage de l'add-on (frpc re-render au boot).
+- **Endpoint durci** (analyse adverse) : `/api/internal/tunnel/rename_slug`
+  exige le **guid comme secret partagé** (`_validate_internal_guid`), pas
+  l'origine réseau seule — `:28100` binde `0.0.0.0` et le LAN de la box peut
+  l'atteindre. Course cache-token au 1er boot corrigée (`reset_cache` +
+  relecture) ; slug échappé via `| tojson` ; URL cloud via `cloud_api_base()`.
+
 ## 2.0.69 - 2026-08-18
 
 Nouvelles intégrations d'appareils et outil de mise en service, plus deux
