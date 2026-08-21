@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.77 - 2026-08-22
+
+- **L'énergie facturable vient du compteur, plus d'un calcul** — quand le
+  compteur du logement publie ses index cumulés, les totaux journaliers,
+  mensuels et annuels s'y adossent directement. Jusqu'ici ils reposaient sur une
+  reconstitution à partir de la puissance, échantillonnée toutes les cinq
+  minutes : acceptable pour un tableau de bord, inadapté à un décompte. Les
+  installations sans compteur communicant conservent ce calcul.
+- ⚠️ **Après la bascule, remettre les compteurs de période à zéro** (bouton
+  « Réinitialiser les capteurs d'énergie ») : l'index d'un compteur n'a aucun
+  rapport avec le cumul précédent, et l'écart serait sinon enregistré comme une
+  consommation.
+
 ## 2.0.76 - 2026-08-22
 
 - **Vue EMS enfin lisible en thème clair** — ses cartes se dessinaient avec un
