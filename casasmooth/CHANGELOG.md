@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.0.75 - 2026-08-22
+
+Métrologie : l'énergie mesurée d'un compteur devient publiable, et la prévision
+solaire cesse d'exiger une connexion.
+
+- **Facteur d'échelle par point de mesure** (`scale:`) — certains compteurs
+  publient leur énergie cumulée dans une unité que rien ne nomme. Le facteur se
+  pose dans le manifeste de l'appareil, sans toucher au code ni à la définition
+  du protocole. Un facteur absurde est refusé et vaut 1 : un compteur à zéro ne
+  se distingue pas, dans l'historique, d'une maison à l'arrêt.
+- **Compteurs cumulés déclarés `total_increasing`** — sans cette déclaration,
+  Home Assistant ne construit aucune statistique long terme : le relevé
+  s'affiche mais reste inexploitable pour un décompte.
+- **Énergie du whatwatt Go publiée** — son échelle a été mesurée sur le terrain
+  (relevés chronométrés comparés à la puissance instantanée) : une unité vaut
+  0,1 Wh. Le soutirage et l'injection cumulés deviennent des grandeurs mesurées,
+  là où seule une intégration de la puissance existait.
+- **Prévision solaire d'un onduleur sans lien local** — la puissance crête est
+  une plaque signalétique, pas une connexion. Un onduleur lisible uniquement par
+  le cloud voyait sa prévision silencieusement ignorée.
+- **Détection V-ZUG élargie** — les modèles dépourvus du module `hh` (AdoraDish
+  V2000) étaient invisibles au scanner alors que l'intégration sait s'en passer.
+  Toujours sans réveiller l'appareil.
+
 ## 2.0.74 - 2026-08-22
 
 - **Les capteurs dérivés portent enfin leur nom** — consommation du logement,
