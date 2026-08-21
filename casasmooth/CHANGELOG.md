@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.76 - 2026-08-22
+
+- **Vue EMS enfin lisible en thème clair** — ses cartes se dessinaient avec un
+  voile sombre très léger, une recette pensée pour un fond noir : posée sur une
+  page presque blanche, elle ne détachait plus rien. Les cartes deviennent
+  blanches sur une page grise, avec un liseré franc, et les textes secondaires
+  sont densifiés.
+- **Couleurs de la prévision et des indicateurs adaptées au thème clair** — les
+  tons pastel choisis pour un fond sombre viraient au lavis sur blanc.
+
 ## 2.0.75 - 2026-08-22
 
 Métrologie : l'énergie mesurée d'un compteur devient publiable, et la prévision
