@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.72 - 2026-08-21
+
+Une box de production ne porte plus d'appareils synthétiques.
+
+- **Banc d'essai SGr désormais opt-in** (`sgr_sim_enabled`, défaut off, même
+  idiome que les intégrations vendorées). Depuis le 06.07.2026, **toute** box
+  abonnée `enhanced_energy` générait 19 entités simulées — PAC, chauffe-eau,
+  chargeur VE, batterie — au milieu des vrais appareils. Inertes hors mode
+  `simulation`, mais sur un pilote destiné au décompte (vZEV/LEG) c'est le
+  mélange « synthétique × mesuré » que le modèle énergétique interdit.
+  Constaté sur EnergieThun. Le banc reste disponible là où il sert (jumeau,
+  banc, développement) en posant le drapeau.
+- ⚠️ Conséquence assumée : sans le drapeau, le mode `cs_sgr_mode = simulation`
+  n'a plus de cible — c'est un outil de banc, pas une fonction client.
+
 ## 2.0.71 - 2026-08-21
 
 Couche coût énergie réelle, thème clair lisible, et la topologie immeuble
