@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.74 - 2026-08-22
+
+- **Les capteurs dérivés portent enfin leur nom** — consommation du logement,
+  PV hors bilan, consommation non mesurée : le correctif de nom humain de
+  2.0.73 n'avait couvert qu'un des deux constructeurs de capteurs, laissant en
+  identifiant brut précisément les plus visibles du tableau de bord.
+
 ## 2.0.73 - 2026-08-22
 
 Ce que le client voit : un thème clair lisible, des capteurs qui portent un nom,
