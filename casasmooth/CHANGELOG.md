@@ -1,5 +1,43 @@
 # Changelog
 
+## 2.0.73 - 2026-08-22
+
+Ce que le client voit : un thème clair lisible, des capteurs qui portent un nom,
+et des entités mortes qui disparaissent enfin.
+
+### Interface
+
+- **Thème clair contrasté** — fond de page nettement gris pour que les cartes
+  blanches ressortent, textes densifiés, liserés de tuiles visibles.
+- **Vue EMS illisible en clair, corrigée** : le mode clair de l'EMS n'était lu
+  qu'au chargement du module, et un ancien appui sur ☀️/🌙 l'épinglait
+  définitivement — l'app en clair affichait donc la vue avec ses couleurs
+  sombres, texte quasi blanc sur fond clair. Choisir un thème réaligne
+  désormais l'EMS immédiatement.
+- **Tuile « bon moment pour consommer »** : n'apparaît plus que si le logement
+  a du PV. Sans PV maison (injection directe au réseau), le capteur répond
+  honnêtement « je ne sais pas » — la tuile restait grise à demeure.
+
+### Entités
+
+- **Noms humains sur les capteurs générés** — le libellé passe par
+  `customize:`, seul chemin qui tienne (Home Assistant recalcule
+  `friendly_name` depuis le nom technique et écrasait la valeur). Les 28
+  capteurs `cs_power_*` s'affichaient en identifiant brut, jusque dans le
+  diagramme de flux.
+- **Nettoyage des orphelines étendu aux entités `template:`** — capteurs,
+  interrupteurs et nombres retirés du code restaient inscrits au registre, donc
+  toujours posés sur les dashboards en « indisponible ». Le nettoyage ne touche
+  que les entités de la plateforme `template`, ce qui met hors de portée les
+  compteurs, intégrateurs, `command_line` et les capteurs MQTT d'un logement.
+
+### Support
+
+- **Le jeton d'accès distant remonte tout de suite** : le coller dans l'écran
+  d'administration ne déclenchait rien jusqu'au prochain démarrage ou à
+  06:15/18:15 — le cloud gardait l'ancien jeton, révoqué entre-temps, et tout
+  accès de support échouait.
+
 ## 2.0.72 - 2026-08-21
 
 Une box de production ne porte plus d'appareils synthétiques.
