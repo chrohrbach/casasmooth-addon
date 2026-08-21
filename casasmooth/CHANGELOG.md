@@ -1,5 +1,39 @@
 # Changelog
 
+## 2.0.71 - 2026-08-21
+
+Couche coût énergie réelle, thème clair lisible, et la topologie immeuble
+T1/T2 (travaux de plusieurs sessions consolidés dans cette version).
+
+### Énergie & coûts
+
+- **La couche coût s'appuie enfin sur un prix d'achat RÉSOLU** (détail, jamais
+  gros) : nouveau `sensor.cs_grid_price_resolved_chf_kwh`, tous les templates de
+  coût repointés. La carte des coûts et le coût du jour affichent des montants
+  réels au lieu du plancher `0.01`.
+- **Un tarif dynamique de DÉTAIL sain est reconnu facturable** (`import_mode`
+  `dynamic`), au lieu de retomber en `spot_only` — la tuile de coût mobile
+  cesse d'afficher « — » quand la box calcule pourtant le bon prix.
+- **Carte des coûts** redressée : plus d'entité fantôme ni de tuile vide,
+  sections repliables cohérentes, injection qui dit son forfait, retrait des
+  cartes HA natives au profit des cartes casasmooth.
+- **Topologie immeuble T1/T2** : « déclaré vs observé », canal montant des
+  moyennes de zone T1→T2, plancher/​fenêtre solaire régional pour une box sans
+  mesure, garde de fraîcheur.
+
+### Domotique & réseau
+
+- **Identifiants MQTT par box** (+ ACL en écriture), avec repli sur le compte
+  partagé.
+- **PV hors bilan** exploité comme **signal de pilotage** SGr (fenêtre solaire
+  lissée), sans jamais entrer dans le bilan du logement.
+- **DIFEE** : le ledger ne fabrique plus de zéro (compteur mort, panne, reset).
+
+### Interface
+
+- **Thème clair lisible** : fond de page soutenu pour que les cartes blanches
+  ressortent, tuiles en puces douces (allumées ambrées), textes assagis.
+
 ## 2.0.70 - 2026-08-19
 
 Renommage self-service du slug de tunnel depuis le dashboard Admin.
