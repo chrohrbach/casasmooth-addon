@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.79 - 2026-08-22
+
+- **La version affichée dans l'application est celle qui tourne vraiment** —
+  elle était gravée dans l'application au moment de sa compilation, et pouvait
+  donc annoncer une version périmée : soit parce que l'application avait été
+  compilée avant la montée de version, soit — le cas courant — parce que le
+  navigateur en servait une copie mise en cache. L'écran Réglages interroge
+  désormais la box, qui sait toujours ce qu'elle exécute.
+
 ## 2.0.78 - 2026-08-22
 
 - **Thème clair : les cartes redeviennent des objets** — posées blanches sur un
