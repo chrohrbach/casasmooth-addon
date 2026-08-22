@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.78 - 2026-08-22
+
+- **Thème clair : les cartes redeviennent des objets** — posées blanches sur un
+  fond gris clair et sans contour, elles flottaient sans limite lisible. Elles
+  reçoivent un liseré, le fond de page descend d'un ton, et les textes
+  secondaires comme les intitulés de section sont densifiés : sur fond blanc,
+  les gris calibrés pour un thème sombre passent sous le seuil de lisibilité.
+
 ## 2.0.77 - 2026-08-22
 
 - **L'énergie facturable vient du compteur, plus d'un calcul** — quand le
