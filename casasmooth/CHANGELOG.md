@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.82 - 2026-08-22
+
+- **« C'est le bon moment » sur l'accueil** — une phrase avant les chiffres, pour
+  qui ne veut pas lire des watts : faut-il lancer la machine maintenant, et
+  pourquoi. Le conseil croise **deux** raisons indépendantes — une source
+  disponible, et un prix plus bas que dans l'heure qui suit — parce que sur un
+  site dont toute la production part au réseau, seul le moment d'achat fait la
+  différence. Quand rien n'est mesurable, la carte le dit au lieu de répondre
+  « non ».
+- **La production hors logement apparaît dans l'application mobile** — l'écran
+  affichait « Panneaux : — kW » pendant que les panneaux produisaient, faute de
+  lire autre chose qu'un capteur de bilan. Elle est désormais nommée et donnée
+  pour ce qu'elle est : produite, non comptée ici. Même correction sur la vue
+  Energie Thun et sur la carte énergie de l'accueil.
+
 ## 2.0.81 - 2026-08-22
 
 Les sources qu'on possède sans en être alimenté deviennent une notion complète :
