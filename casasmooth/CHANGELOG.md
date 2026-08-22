@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.84 - 2026-08-22
+
+Le coût par usage — parce qu'un kilowattheure ne parle à personne, et trois
+cents francs par an, si. *(Pack Énergie avancé.)*
+
+- **Coût par usage, journalier et mensuel** — la dépense se répartit entre
+  usages au prorata de leur consommation, avec le prix réellement payé sur la
+  période. La somme des usages égale donc toujours la dépense réelle : le
+  tableau se réconcilie avec la facture, toujours.
+- **Veille permanente** — ce que le logement consomme quand personne n'y touche,
+  mesuré comme le minimum sur 24 heures, et son coût annualisé. Sur le pilote
+  Energie Thun : 140 W en continu, soit environ 330 francs par an, maison vide.
+- **Coût au prix moyen** — la même consommation facturée au prix moyen de la
+  période. L'écart avec la dépense réelle isole le seul bénéfice du décalage des
+  usages : ni la météo, ni le contrat, ni le niveau de consommation n'y entrent.
+  Un écart défavorable s'affiche comme un autre.
+
 ## 2.0.83 - 2026-08-22
 
 - **Correctif : le conseil « bon moment » ignorait la production hors logement.**
