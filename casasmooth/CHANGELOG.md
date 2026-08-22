@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.83 - 2026-08-22
+
+- **Correctif : le conseil « bon moment » ignorait la production hors logement.**
+  Le seuil se compare en watts, mais la valeur lue était celle du fournisseur —
+  souvent en kilowatts. Une production de 3 890 W se lisait donc « 3,89 », loin
+  sous le seuil, et le conseil restait muet alors que les panneaux tournaient.
+- **La date suit enfin la langue de l'interface** — elle s'affichait en anglais
+  sur un tableau de bord allemand, et au format américain. Jour traduit, date au
+  format suisse.
+
 ## 2.0.82 - 2026-08-22
 
 - **« C'est le bon moment » sur l'accueil** — une phrase avant les chiffres, pour
