@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.80 - 2026-08-22
+
+- **Correctif : les totaux journaliers d'énergie réseau avaient disparu.** En
+  adossant ces totaux au compteur mesuré (2.0.79), leur nom suivait celui de leur
+  nouvelle source — les graphiques qui les citaient pointaient donc dans le vide.
+  Les noms sont rétablis et ne dépendent plus de la provenance : seule la source
+  change, jamais l'identité de la série.
+- **Les appareils qui ne publient qu'un index cumulé sont enfin comptés** —
+  l'électroménager communicant ne publie pas de puissance instantanée ; il était
+  écarté du décompte par usage et sa consommation tombait dans le « non mesuré ».
+  Un appareil n'est écarté que s'il est déjà compté par ailleurs, ce qui reste le
+  seul cas de double comptage.
+- **Index d'énergie V-ZUG reconnu** — les lave-vaisselle, lave-linge et
+  sèche-linge de la marque entrent désormais dans la ventilation par usage.
+
 ## 2.0.79 - 2026-08-22
 
 - **La version affichée dans l'application est celle qui tourne vraiment** —
