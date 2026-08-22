@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.81 - 2026-08-22
+
+Les sources qu'on possède sans en être alimenté deviennent une notion complète :
+hors du bilan, mais visibles et utiles au pilotage.
+
+- **Batterie hors logement** — un stockage partagé ou distant peut désormais se
+  déclarer, avec ses propres agrégats de puissance et de charge. Ils restent
+  strictement séparés de ceux du logement : la charge moyenne locale commande le
+  palier de prix, les seuils de chaque appareil et le pilotage de tout un
+  immeuble, elle ne doit jamais bouger parce qu'une batterie voisine s'est
+  déclarée.
+- **Les sources hors bilan apparaissent dans la carte Sources** — c'est là que
+  l'habitant vient voir ce qui l'alimente, et ces sources vont piloter ses
+  appareils. Une machine qui démarre à cause d'une production invisible rend le
+  comportement de la maison inexplicable. Le libellé dit clairement qu'elles ne
+  sont pas comptées.
+- **« Bon moment pour consommer » fonctionne enfin sur ces sites** — un logement
+  dont toute la production est hors bilan n'avait aucune source à interroger : la
+  tuile restait grise en permanence.
+- **La production hors bilan ne fausse plus la planification** — sa prévision
+  alimentait l'optimiseur, qui différait des consommations en attendant un soleil
+  dont le bénéfice va ailleurs.
+
 ## 2.0.80 - 2026-08-22
 
 - **Correctif : les totaux journaliers d'énergie réseau avaient disparu.** En
