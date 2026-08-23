@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.90 - 2026-08-23
+
+- **La prévision solaire régionale ne pouvait pas s'exécuter.** Le capteur qui
+  donne la forme du jour — et la fenêtre « bon moment pour lancer un gros
+  consommateur » qui en dépend — restait vide sur toutes les installations. Il
+  s'appuyait sur un chemin interne qui n'existe que sur une machine de
+  développement ; il passe désormais par le même canal que tous les autres
+  capteurs de ce type. La prévision, la fenêtre solaire et l'échelle des
+  signaux fonctionnent enfin sur une installation normale.
+
+- **La recherche web technique de l'assistant était muette.** Le petit
+  programme qu'elle appelle n'était en réalité livré sur aucune installation :
+  il était transformé en fichier compilé avant d'être copié, et la copie ne
+  trouvait donc rien. Il est de nouveau livré, et son absence éventuelle est
+  désormais signalée dans le journal au lieu de passer inaperçue.
+
 ## 2.0.89 - 2026-08-23
 
 - **Le diagramme des flux d'énergie se referme enfin** — toute la production
