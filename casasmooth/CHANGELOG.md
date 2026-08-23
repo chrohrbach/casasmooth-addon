@@ -1,5 +1,54 @@
 # Changelog
 
+## 2.0.91 - 2026-08-24
+
+- **Votre facture repose désormais sur le tarif officiel de votre commune.**
+  Un ménage suisse consommant moins de 100 MWh par an est lié à
+  l'approvisionnement de base de son gestionnaire de réseau : le tarif publié
+  par celui-ci *est* son prix. Il n'entrait pourtant dans aucun de nos calculs
+  de coût, qui se rabattaient sur une valeur saisie à la main — quand elle
+  l'avait été. Le tableau de bord et l'application mobile pouvaient ainsi
+  afficher deux prix différents pour la même électricité. Il n'y a plus qu'un
+  seul prix, et il indique sur quoi il repose.
+
+- **Le tarif officiel est maintenant récupéré aussi avec l'abonnement énergie
+  standard.** Il y était réservé à l'offre avancée, alors que c'est le prix par
+  défaut légal du foyer et non une fonction supplémentaire.
+
+- **La rétribution minimale légale d'injection est prise en compte.** Depuis
+  janvier 2026, une installation de moins de 30 kWc a droit à au moins
+  6 ct./kWh pour l'électricité qu'elle injecte. Un décompte trimestriel —
+  la maille à laquelle la loi et votre gestionnaire de réseau raisonnent —
+  indique le montant garanti et vous dit quand ce minimum s'applique. Le prix
+  instantané, lui, continue d'afficher la réalité du marché, y compris
+  négative : c'est ce qui vous dit de ne pas exporter à cet instant.
+
+- **Les électroménagers Home Connect sont reconnus par gamme.** Seuls trois
+  modèles précis l'étaient ; tout autre lave-vaisselle Bosch ou four Siemens
+  restait invisible. Lave-vaisselle, sèche-linge, hottes et — c'est nouveau —
+  lave-linge sont désormais reconnus pour Bosch, Siemens, Neff, Gaggenau et
+  Constructa.
+
+- **Le CO₂ de votre réseau est enfin lu sur les installations non
+  francophones.** Le nom du capteur Electricity Maps dépend de la langue de
+  votre système : casasmooth n'en connaissait que deux et retombait
+  silencieusement sur la moyenne suisse — tout en continuant de vous
+  recommander de connecter ce que vous aviez déjà connecté.
+
+- **Le tableau de bord casasmooth se remet en place s'il a été changé.** La
+  vérification était sautée pendant 24 heures après chaque passage, si bien
+  qu'un tableau par défaut modifié ne revenait pas. L'onglet « Overview » de
+  Home Assistant est masqué, et un échec est désormais signalé.
+
+- **Le numéro de commune (BFS) est un champ texte.** Il s'affichait avec des
+  flèches et une virgule, comme une quantité. Une valeur déjà saisie est
+  reprise automatiquement.
+
+- **Rattrapage : la version 2.0.90 contenait aussi la traduction complète de
+  la vue Énergie** — dix-huit catégories de coûts, le bloc tarifaire et une
+  soixantaine de libellés s'affichaient en français ou en anglais quelle que
+  soit la langue choisie. Ces notes ne le mentionnaient pas.
+
 ## 2.0.90 - 2026-08-23
 
 - **La prévision solaire régionale ne pouvait pas s'exécuter.** Le capteur qui
