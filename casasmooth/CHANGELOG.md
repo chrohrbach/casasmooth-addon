@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.85 - 2026-08-23
+
+- **La carte des coûts par usage** — où part l'argent, classé du poste le plus
+  cher au moins cher, en francs plutôt qu'en kilowattheures, avec la dépense du
+  mois projetée « à ce rythme ». La projection n'apparaît qu'à partir du
+  troisième jour : un seul jour atypique la rendrait trompeuse.
+- **La veille permanente y figure en évidence** — ce que le logement consomme
+  quand personne n'y touche, et ce que cela représente sur une année. C'est
+  souvent le poste le plus facile à réduire, et celui que personne ne regarde.
+
 ## 2.0.84 - 2026-08-22
 
 Le coût par usage — parce qu'un kilowattheure ne parle à personne, et trois
