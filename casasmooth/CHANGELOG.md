@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.88 - 2026-08-23
+
+- **Les liens envoyés par courriel pointaient vers l'adresse locale de la box** —
+  le module d'invitation recalculait l'adresse publique de son côté, avec une
+  copie du code qui n'avait pas reçu une correction faite ailleurs. Le
+  destinataire, qui n'est par définition pas sur le réseau local, recevait un
+  lien mort. Il n'y a plus qu'une seule façon de résoudre cette adresse.
+- **L'adresse publique résolue est désormais consultable** — elle se choisissait
+  en silence, et son échec ne se voyait que bien plus tard, dans un QR code
+  affiché au mur ou un courriel qui ne s'ouvre pas.
+
 ## 2.0.87 - 2026-08-23
 
 - **Les liens de l'index des consoles fonctionnent depuis n'importe où** — ils
