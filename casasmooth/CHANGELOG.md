@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.89 - 2026-08-23
+
+- **Le diagramme des flux d'énergie se referme enfin** — toute la production
+  aboutissait au logement, si bien qu'une installation produisant 8 kW pour
+  700 W consommés affichait un flux entrant sans destination. Le réseau et la
+  batterie ne sont pas des consommateurs : ce sont les deux destinations du
+  surplus, et elles figurent désormais comme telles. Ce qui entre égale ce qui
+  sort.
+
 ## 2.0.88 - 2026-08-23
 
 - **Les liens envoyés par courriel pointaient vers l'adresse locale de la box** —
