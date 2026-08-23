@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.87 - 2026-08-23
+
+- **Les liens de l'index des consoles fonctionnent depuis n'importe où** — ils
+  pointaient vers l'adresse locale d'usine de la box, un nom qui ne se résout ni
+  à distance, ni depuis un téléphone, ni sur une installation qui porte une autre
+  adresse. Le lien s'affichait normalement ; il était simplement mort. Il suit
+  désormais l'adresse par laquelle vous consultez le tableau de bord.
+
 ## 2.0.86 - 2026-08-23
 
 - **Le flux d'énergie montre enfin un flux** — une flèche indique qui alimente
@@ -9,6 +17,15 @@
   grandeur du bilan. Elle est désormais montrée sous son propre nom.
 - **Les équipements absents ne prennent plus de place** — un logement sans
   batterie n'affiche plus une case de batterie vide.
+- **Les liens de la box pointent enfin sur la box** — l'index des consoles, les
+  QR collés au mur et les liens des e-mails renvoyaient tous vers
+  `homeassistant.local`, une adresse qui ne répond que depuis le réseau local.
+  Ils portent désormais l'adresse publique de l'installation.
+- **Chaque appareil porte enfin son nom dans les règles d'énergie** — un
+  lave-vaisselle rangé dans la cuisine s'annonçait « Cuisine Chauffage », et la
+  fiche qui s'ouvrait au clic montrait tout autre chose. Le libellé par zone
+  était réservé aux appareils de chauffage ; il s'était étendu, sans le dire, à
+  tout appareil compté par son index.
 
 ## 2.0.85 - 2026-08-23
 
