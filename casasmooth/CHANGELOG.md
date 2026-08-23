@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.86 - 2026-08-23
+
+- **Le flux d'énergie montre enfin un flux** — une flèche indique qui alimente
+  qui, là où trois cadres côte à côte laissaient deviner.
+- **La production hors logement y apparaît** — l'encadré affichait un tiret
+  pendant que les panneaux produisaient, faute de lire autre chose qu'une
+  grandeur du bilan. Elle est désormais montrée sous son propre nom.
+- **Les équipements absents ne prennent plus de place** — un logement sans
+  batterie n'affiche plus une case de batterie vide.
+
 ## 2.0.85 - 2026-08-23
 
 - **La carte des coûts par usage** — où part l'argent, classé du poste le plus
