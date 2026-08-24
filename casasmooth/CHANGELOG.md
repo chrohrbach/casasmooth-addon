@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.0.92 - 2026-08-24
+
+- **Une serrure Nuki dont le capteur de porte perdait sa lecture affichait
+  « ouverte » en continu** — batterie faible, calibrage perdu, serrure
+  retirée : tous les cas où le capteur n'a en réalité rien à dire étaient
+  jusqu'ici confondus avec une porte réellement ouverte. Un cas constaté a
+  duré huit jours sans que rien ne le distingue d'une vraie ouverture. Ces
+  états affichent désormais « indisponible » ou « inconnu », jamais
+  « ouverte » par défaut.
+
+- **La carte des coûts énergie affichait des champs incohérents avec leur
+  propre usage.** Six prix pouvaient valoir 1 centime sans que personne ne
+  l'ait saisi, ce qui rendait impossible de distinguer un réglage oublié
+  d'un réglage volontaire. Une valeur dix fois trop élevée pouvait rester en
+  place sans déclencher d'alerte — corrigé ; toute installation vérifie
+  désormais ses prix contre un plafond réaliste, pas seulement contre un
+  plancher. L'indicateur de santé des sources tarifaires n'affichait plus
+  clairement s'il fallait s'inquiéter. Le nom et le site du fournisseur —
+  qui ne servent qu'à l'affichage — sont désormais rangés à part des
+  réglages qui déterminent réellement votre facture, et ne sont demandés
+  qu'aux installations qui les affichent réellement.
+
+- **Le calcul d'optimisation peut désormais distinguer deux régimes légaux
+  d'injection au réseau.** Un foyer n'ayant signé aucun contrat spécifique
+  est payé selon un tarif de référence fixé chaque trimestre, pas selon le
+  cours de l'heure : le pilotage peut désormais refléter cette réalité
+  plutôt que de rechercher, heure par heure, un gain qui ne lui est pas
+  applicable.
+
 ## 2.0.91 - 2026-08-24
 
 - **Votre facture repose désormais sur le tarif officiel de votre commune.**
