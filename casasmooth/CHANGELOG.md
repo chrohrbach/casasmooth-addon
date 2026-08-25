@@ -1,5 +1,46 @@
 # Changelog
 
+## 2.0.93 - 2026-08-25
+
+- **La carte « Production PV hors logement » s'affichait sur toute
+  installation**, même sans aucun panneau hors bilan déclaré — un capteur
+  toujours présent en interne suffisait à la faire apparaître. Elle n'est
+  désormais montrée que si un panneau hors logement a réellement été
+  déclaré.
+
+- **Les onduleurs solaires génériques (protocole SunSpec) sont reconnus
+  automatiquement**, plus seulement les marques nommées une à une dans nos
+  règles.
+
+- **La carte « Prévision » se basait sur le mauvais capteur PV** et pouvait
+  afficher une courbe incohérente avec la production réelle.
+
+- **La borne de recharge Pico (smart-me) est maintenant reconnue comme
+  borne**, avec sa puissance publiée dans la bonne unité (kW).
+
+- **Traductions manquantes ou laissées en anglais/français** corrigées sur
+  plusieurs écrans : sécurité, administration, monitoring, véhicule, air,
+  santé, chauffage, aperçu, système, météo.
+
+- **L'écran « Energy flow » de l'application mobile plantait** sur les
+  installations utilisant ce module — corrigé.
+
+- **Les appareils simulés (démonstration) sont mieux séparés du bilan mesuré
+  réel**, et le mode « et si » peut désormais redimensionner batterie et PV,
+  pas seulement simuler leur présence.
+
+- **Le moteur de règles SGr est plus robuste** : budget de surplus et
+  plafond de puissance appliqués correctement, règles mieux validées,
+  comptabilités qui ne se mélangent plus entre logements, plus de vente de
+  flexibilité fictive. Un capteur de cohérence tarifaire et des journaux
+  longue durée permettent de suivre la qualité des décisions dans le temps.
+
+- **Les notifications vocales qui ne jouaient que le carillon, sans la
+  phrase, sont corrigées.**
+
+- **Un décompte DIFEE pouvait facturer 0 CHF à un fluide réellement
+  consommé, sans le moindre avertissement.** Corrigé.
+
 ## 2.0.92 - 2026-08-24
 
 - **Une serrure Nuki dont le capteur de porte perdait sa lecture affichait
