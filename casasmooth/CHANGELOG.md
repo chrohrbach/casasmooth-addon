@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.97 - 2026-08-26
+
+- **Les bornes de recharge réapparaissent parmi les consommateurs.** Rangée
+  comme borne, une station de recharge avait quitté la liste des appareils du
+  graphique et sa consommation tombait dans le « non mesuré ». Elle y figure de
+  nouveau, et elle est déduite du non mesuré en contrepartie — le total continue
+  de se conserver.
+
+- **La consommation d'une borne qui publie en kilowatts était comptée comme
+  nulle** dans le calcul du « non mesuré ». Corrigé.
+
+- **Le graphique de flux explique désormais pourquoi le solaire ne rejoint pas
+  la maison** sur les installations dont les panneaux sont raccordés ailleurs :
+  la phrase d'explication apparaît sous le graphique, et les libellés ont été
+  raccourcis pour ne plus être coupés par la carte.
+
 ## 2.0.96 - 2026-08-26
 
 - **Le graphique « Sources · Consommateurs » montre désormais la production
