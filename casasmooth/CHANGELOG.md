@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.0.98 - 2026-08-27
+
+- **Un canal de secours pour la connexion à deux facteurs.** Si votre
+  téléphone — et avec lui le code de connexion — est perdu ou en panne, un
+  code à usage unique peut désormais vous être envoyé par e-mail. Au login,
+  vous choisissez le canal ; l'e-mail s'active une fois pour toutes dans
+  votre profil (Sécurité → modules d'authentification).
+
+- **Les bornes de recharge deviennent pilotables en courant.** La consigne
+  de courant d'une borne (Pico smart-me) peut être écrite par les règles
+  d'énergie — la charge suit le surplus solaire ou le tarif, plus seulement
+  marche/arrêt.
+
+- **Les prises Swiss Domotique survivent aux mises à jour de firmware.**
+  Le firmware Athom v2 renomme l'identité de la prise ; elle disparaissait
+  alors des consommateurs. Les deux générations sont reconnues.
+
+- **Import KNX : appariement automatique commande/état** et regroupement
+  par appareil — un projet ETS importé donne des entités complètes, pas des
+  moitiés d'interrupteurs.
+
+- **La tuile « bon moment » dit d'où vient son signal** (surplus mesuré,
+  immeuble, fenêtre solaire régionale), et la tuile gestionnaire de réseau
+  date son offre — zéro échantillon ne s'affiche plus comme 0 %.
+
+- **Nos e-mails font peau neuve** : envoi transactionnel dédié, lien de
+  désabonnement en un clic, et fin de quelques doublons et boucles de
+  notifications internes.
+
+- **Récupérations web plus fiables** : nos requêtes sortantes s'identifient
+  correctement — certains sites (protégés par Cloudflare) les refusaient.
+
+- **Divers** : l'horloge d'indisponibilité du nettoyage d'appareils survit
+  au redémarrage ; nouveau numéro de contact (077 267 42 37).
+
 ## 2.0.97 - 2026-08-26
 
 - **Les bornes de recharge réapparaissent parmi les consommateurs.** Rangée
