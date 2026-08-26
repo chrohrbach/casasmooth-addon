@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.95 - 2026-08-26
+
+- **Le graphique de flux montre désormais la production solaire qui n'alimente
+  pas le logement.** Sur une installation dont les panneaux sont raccordés
+  ailleurs — derrière le compteur des communs, par exemple — la production
+  apparaît dans une bande séparée, reliée au réseau et détachée du reste du
+  schéma. On voit ce que l'installation produit, et on comprend d'un coup d'œil
+  que les appareils de la maison, eux, ne sont alimentés que par le réseau.
+  Le bilan énergétique n'est pas modifié : cette production n'y entre pas.
+
 ## 2.0.94 - 2026-08-26
 
 - **Les bornes de recharge s'affichent désormais sans voiture connectée.**
