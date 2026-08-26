@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.94 - 2026-08-26
+
+- **Les bornes de recharge s'affichent désormais sans voiture connectée.**
+  Une installation équipée d'un chargeur mais dont le véhicule n'est pas
+  intégré ne recevait aucun capteur de recharge — ni puissance, ni énergie,
+  ni coût. Le chargeur seul suffit maintenant.
+
+- **Immeubles : une puissance non mesurée s'affiche « indisponible » au lieu
+  de 0 W.** Un capteur muet publiait un zéro, et l'occupant lisait « tu ne
+  consommes rien » sur la foi d'une mesure que personne n'avait prise. Vrai
+  pour la puissance d'un logement comme pour celle du bâtiment.
+
+- **Le bâtiment retombe sur ses agrégats standard** quand la mesure dédiée
+  n'est pas configurée, au lieu de publier une production et une consommation
+  nulles qui se lisaient comme un immeuble éteint.
+
+- **Bornes de recharge communes : la capacité d'absorption est apprise sur la
+  puissance réellement observée**, au lieu de la valeur nominale déclarée —
+  qui pouvait la surestimer du double.
+
+- **L'écran de cohérence explique pourquoi un appareil n'est pas piloté**,
+  au lieu de le laisser absent sans raison.
+
 ## 2.0.93 - 2026-08-25
 
 - **La carte « Production PV hors logement » s'affichait sur toute
