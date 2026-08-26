@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.96 - 2026-08-26
+
+- **Le graphique « Sources · Consommateurs » montre désormais la production
+  solaire qui n'alimente pas le logement.** Sur une installation dont les
+  panneaux sont raccordés ailleurs — derrière le compteur des communs, par
+  exemple — la production apparaît comme source, reliée à sa seule destination
+  réelle : l'injection au réseau. Elle ne rejoint jamais le domicile, ce qui
+  fait voir d'un coup d'œil que les appareils de la maison sont alimentés par
+  le réseau seul. Le bilan énergétique n'est pas modifié.
+
 ## 2.0.95 - 2026-08-26
 
 - **Le graphique de flux montre désormais la production solaire qui n'alimente
