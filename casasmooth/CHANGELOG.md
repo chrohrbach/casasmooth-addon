@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.99 - 2026-08-27
+
+- **Le bouton qui bascule toutes les prises d'une pièce fonctionne même si
+  certaines prises n'ont pas encore d'état.** Une prise fraîchement
+  intégrée (KNX notamment) reste « inconnue » quelques instants ; le bouton
+  restait alors muet. Désormais : au moins une prise allumée → tout
+  s'éteint ; sinon → tout s'allume.
+
+- **Import KNX étendu** : thermostats (climate), lumières couleur RGB et
+  blanc réglable, capteurs binaires enrichis, et création automatique des
+  pièces du projet ETS. La suppression d'une entité importée nettoie
+  proprement le store KNX.
+
+- **Les règles d'énergie ne se re-déclenchent plus sur leur propre effet**
+  (boucle refermée sur elle-même).
+
+- **Supervision : un même défaut vu sur plusieurs installations est regroupé
+  en un seul problème** au lieu d'une alerte par box.
+
 ## 2.0.98 - 2026-08-27
 
 - **Un canal de secours pour la connexion à deux facteurs.** Si votre
