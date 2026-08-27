@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.100 - 2026-08-27
+
+- **Nouveau thème « Cogestim »** dans l'application mobile — identité claire
+  aux couleurs de la régie (bordeaux, gris), à choisir dans Réglages → Thème.
+
+- **Nouvel onglet « À propos »** (à activer dans Réglages → Panneaux) : le
+  site de votre fournisseur s'ouvre dans l'application. Le site affiché se
+  choisit dans les Réglages — casasmooth, Cogestim, Energie Thun — et un
+  exploitant de parc pourra l'imposer à sa flotte.
+
+- **Connexion de secours par e-mail** : le code à usage unique part par le
+  canal transactionnel dédié — il n'est plus retenu par les protections
+  anti-envoi-de-masse ni par un réglage d'expéditeur hérité.
+
+- **La mise en service détecte un foyer à administrateur unique** : si un
+  seul humain peut administrer la maison, la revue le signale — téléphone
+  perdu = maison inadministrable — et propose le second compte et le canal
+  e-mail de secours. Un foyer volontairement mono-admin peut l'accepter.
+
+- **Les commandes internes déployées s'enregistraient parfois en retard**
+  d'un redémarrage — corrigé, elles sont actives dès le déploiement.
+
+- **Un capteur qui ne peut pas mesurer le dit** (« indisponible ») au lieu
+  d'afficher une valeur inventée ou de disparaître.
+
+- **Export des index de compteurs vers un facturier partenaire**, protégé
+  par un jeton dédié — première brique de l'intégration décompte.
+
 ## 2.0.99 - 2026-08-27
 
 - **Le bouton qui bascule toutes les prises d'une pièce fonctionne même si
