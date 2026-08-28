@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.104 - 2026-08-28
+
+- **La règle « Pendant la fenêtre favorable » tient désormais ses deux
+  promesses** : elle allume quand le signal s'ouvre — surplus mesuré, signal
+  d'immeuble ou fenêtre solaire régionale — et **éteint quand il se referme**.
+  Une maison sans production propre peut ainsi piloter ses prises sur le
+  soleil de la région, sans un watt de photovoltaïque dans le bâtiment.
+
+- **Trois familles d'appareils reconnues** : les vannes modernes, les
+  chauffe-eau à intégration native et les humidificateurs. Ils apparaissent
+  dans la section CVC de leur pièce.
+
+- **Facturation** : chaque pièce comptable reçoit sa propre référence de
+  paiement, le document s'imprime sur fond blanc et est signé par le
+  propriétaire ; la vue autonome ne retombe plus sur l'accueil.
+
+- **Éclairage** : la relecture des habitudes fonctionne sur les box clientes,
+  et la carte Cohérence détecte les nuits qui ne s'enchaînent pas.
+
 ## 2.0.103 - 2026-08-28
 
 - **Correctif de la 2.0.102** : la section « Énergie » d'une pièce — compteur,
