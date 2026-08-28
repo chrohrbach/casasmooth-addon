@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.102 - 2026-08-28
+
+- **La borne de recharge se pilote comme n'importe quel appareil** : prix
+  minimum, fenêtre horaire, présence, session. L'exécution écrit une consigne
+  de courant au lieu de basculer un interrupteur. « Ne charge pas » devient un
+  ralenti à 6 A — le minimum qu'un véhicule exige — et non un arrêt : sur une
+  installation sans contacteur en amont, l'arrêt franc n'existe pas.
+
+- **La borne apparaît aussi sur la carte de sa pièce**, plus seulement dans la
+  vue Énergie et la vue Voiture.
+
+- **Les tondeuses robots sont reconnues.** Home Assistant leur donne un domaine
+  dédié que casasmooth ignorait : une tondeuse correctement rangée dans une
+  pièce restait invisible partout. Elle a désormais sa section, ses commandes
+  et sa bascule d'affichage.
+
+- Retrait d'une bascule d'affichage « Home Energy » qui ne commandait rien et
+  n'apparaissait dans aucun réglage.
+
 ## 2.0.101 - 2026-08-28
 
 - **Facturation intégrée** : la box produit des pièces comptables et des
