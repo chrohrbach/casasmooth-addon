@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.103 - 2026-08-28
+
+- **Correctif de la 2.0.102** : la section « Énergie » d'une pièce — compteur,
+  production, batterie — avait cessé de s'afficher. Rétablie.
+
+- **La borne de recharge apparaît dans le détail de sa pièce**, avec sa propre
+  bascule d'affichage. La version précédente l'annonçait sur la carte de la
+  pièce sans rien montrer en l'ouvrant.
+
 ## 2.0.102 - 2026-08-28
 
 - **La borne de recharge se pilote comme n'importe quel appareil** : prix
