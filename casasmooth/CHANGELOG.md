@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.0.101 - 2026-08-28
+
+- **Facturation intégrée** : la box produit des pièces comptables et des
+  QR-factures suisses, avec un nouveau tableau de bord « Facturation »
+  (même accès que l'EMS, selon l'offre).
+
+- **Export partenaire** : les index de compteurs — électricité, eau chaude,
+  chaleur — sont servis au facturier au pas du jour, avec identifiants
+  opaques et accès par le tunnel, derrière le jeton dédié.
+
+- **Les capteurs du téléphone reviennent** via l'application compagnon
+  casasmooth : batterie, activité et capteurs du véhicule (Android Auto)
+  retrouvent leur catégorie et leurs vues.
+
+- **Véhicule : l'application interroge d'abord la voiture (OBD)** avant
+  d'estimer — les valeurs sûres priment sur les déductions.
+
+- **Import KNX : le ré-import réconcilie** au lieu de dupliquer (ignorer /
+  remplacer / créer, au choix), et un capteur de pluie se déclare par
+  étiquette plutôt que d'être deviné par son nom.
+
+- **Les alertes d'anomalie disent désormais quelle installation parle** —
+  le nom de la box précède chaque SMS et notification.
+
+- **Fin des consommateurs comptés deux fois** (Aqara, Eve, frient,
+  myStrom) : une seule voie de mesure par appareil, et le **nettoyage de
+  rétention passe en réel** après un mois de validation à blanc.
+
+- **Le bouton qui bascule les prises d'une pièce existe aussi dans les
+  pièces sans éclairage**, les tondeuses robots ont leur domaine, et la
+  borne de recharge figure sur la carte de zone.
+
 ## 2.0.100 - 2026-08-27
 
 - **Nouveau thème « Cogestim »** dans l'application mobile — identité claire
