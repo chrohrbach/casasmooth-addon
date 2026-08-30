@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.106 - 2026-08-30
+
+- **Le logo de l'installateur partenaire, à côté du nôtre.** Trois champs dans
+  Admin — nom, site, adresse du logo — et il apparaît en haut de chaque panneau
+  de réglages ainsi que dans l'en-tête de l'application mobile, cliquable vers
+  son site. Le logo est copié sur la box, jamais chargé depuis le site du
+  partenaire : aucune requête vers un tiers à l'ouverture des réglages, et la
+  carte survit à une réorganisation de son site. Retirer le partenaire retire
+  sa copie.
+
+- **Automatisations d'une pièce** : le bouton des prises n'apparaît plus que si
+  l'automatisation qu'il commande existe sur la box — il pouvait s'afficher
+  sans rien commander. Et une section sans aucun bouton disparaît, au lieu
+  d'afficher un titre au-dessus d'une tuile « Vide ».
+
+- **Ménage interne** : quatre commandes d'outillage de flotte (comparaison,
+  tri de journaux, supervision du backend, requêtes sémantiques) quittent la
+  box — elles vivent désormais côté atelier. Aucune fonction utilisateur
+  retirée.
+
 ## 2.0.105 - 2026-08-30
 
 - **Une seule identité visuelle.** Les thèmes du tableau de bord suivaient
