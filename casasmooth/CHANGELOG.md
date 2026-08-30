@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.107 - 2026-08-30
+
+- **Le logo du partenaire se télécharge enfin.** L'adresse saisie dans Admin
+  était lue au mauvais endroit : la copie locale ne se créait sur aucune box.
+  Corrigé — et un logo démesuré est réduit au téléchargement (un original de
+  26827×5591 px se servait bien mais ne s'affichait nulle part).
+
+- **Le partenaire signe, il ne s'impose pas** : logo plus discret dans les
+  panneaux de réglages, et sur mobile il se pose en petit à gauche de
+  « Favoris ». L'alignement de l'en-tête mobile — favoris et liste à droite —
+  est rétabli au passage, et un logo dont la copie manque encore se masque au
+  lieu d'afficher une image cassée.
+
+- **Mobile** : les serrures de la maison apparaissent dans « Général », section
+  Appareils — verrouillage et déverrouillage à un geste. Une traduction
+  manquante de l'onglet À propos est complétée.
+
 ## 2.0.106 - 2026-08-30
 
 - **Le logo de l'installateur partenaire, à côté du nôtre.** Trois champs dans
