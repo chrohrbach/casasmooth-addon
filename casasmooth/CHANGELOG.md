@@ -1,5 +1,52 @@
 # Changelog
 
+## 2.0.105 - 2026-08-30
+
+- **Une seule identité visuelle.** Les thèmes du tableau de bord suivaient
+  encore le violet d'avant : quatorze variantes, dont douze bâties sur une
+  mécanique de couleur que plus rien ne pilotait. Il en reste **cinq**, aux noms
+  et aux couleurs de l'application — sombre, clair, casasmooth, minuit, océan.
+  Passer du tableau de bord à l'app ne change plus de marque.
+  **À faire une fois** : un profil Home Assistant réglé sur un ancien thème
+  (« casasmooth rounded » et ses variantes) retombe sur le thème par défaut de
+  Home Assistant — le thème est à re-sélectionner dans le profil utilisateur.
+
+- **Lisibilité** : le corps de page échappait au thème — du blanc sur blanc sur
+  les quatre palettes claires ; les cartes ne se détachaient plus du fond, dont
+  le gris est maintenant assumé et identique des deux côtés ; huit palettes
+  incomplètes se dégradaient en silence. Complétées et verrouillées par un test.
+
+- **Éclairage** : une lampe couleur reçoit une palette de six pastilles — deux
+  températures de blanc puis quatre couleurs. C'est le seul moyen de poser une
+  couleur depuis une carte, le réglage fin restant dans l'interface Home
+  Assistant. Une palette composée à la main n'est jamais écrasée. Les curseurs
+  d'une tuile suivent désormais ce que la lampe sait faire, la section avancée
+  revient à deux colonnes, et les scènes restaurent de nouveau la couleur.
+
+- **Les sections neuves du tableau de bord s'affichent.** Une bascule
+  d'affichage toute neuve naît éteinte et rien ne le signalait : après la
+  2.0.104, la borne de recharge et l'énergie de pièce restaient invisibles. Les
+  sections dont le défaut voulu est « visible » sont désormais allumées une fois,
+  sans toucher aux choix déjà faits.
+
+- **Facturation** : la liste des factures devient compacte — onglets, tri,
+  filtre, aperçu intégré — et le carnet des débiteurs a son écran. Sans lui, un
+  relevé d'usage ne connaît son payeur que par son courriel et la zone
+  « Payable par » du bulletin reste blanche.
+
+- **Une marque, plus trois listes** : les couleurs, la présentation de l'onglet
+  Énergie et le site de l'onglet À propos étaient trois réglages sans lien — le
+  même partenaire s'y écrivait de deux façons. Ils descendent maintenant
+  ensemble. Réglages réorganisés, panneaux en premier.
+
+- **Hygiène de la box** : chaque montée de version empilait un bundle web mort
+  de plus dans `/config/www`. Les fichiers servis sont désormais reflétés, avec
+  une fenêtre de grâce de 48 h avant d'en purger un encore utilisé, et un
+  rattrapage unique pour les box déjà encombrées. Plus : la page À propos ne
+  blanchit plus quand le site refuse d'être encadré, la clé d'une étiquette suit
+  l'identifiant que Home Assistant fabrique depuis son nom, et le bouton du tout
+  premier écran n'est plus en français en dur.
+
 ## 2.0.104 - 2026-08-28
 
 - **La règle « Pendant la fenêtre favorable » tient désormais ses deux
