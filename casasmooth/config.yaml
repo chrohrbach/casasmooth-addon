@@ -1,5 +1,5 @@
 # casasmooth Add-on
-# Runs from a pre-built Docker image (ghcr.io/chrohrbach/casasmooth-{arch}).
+# Runs from a pre-built Docker image (ghcr.io/teleia/casasmooth-{arch}).
 # Default: source code is compiled to .pyc bytecode, runs from /opt/casasmooth.
 # When ``dev_mount`` is enabled, /opt/casasmooth/app is swapped for a symlink
 # to /config/casasmooth/app so developers can edit Python sources over SSH and
@@ -15,7 +15,7 @@ arch:
   - amd64
   - aarch64
 
-image: "ghcr.io/chrohrbach/casasmooth-{arch}"
+image: "ghcr.io/teleia/casasmooth-{arch}"
 
 init: false
 startup: application
