@@ -206,7 +206,7 @@ application at `/opt/casasmooth/app` for a symlink pointing at
   production — only the location of the Python source differs.
 
 Leave at `false` on client installations. See
-[deployment.md](https://github.com/chrohrbach/casasmooth/blob/main/docs/operations/deployment.md)
+[deployment.md](https://github.com/teleia/casasmooth/blob/main/docs/operations/deployment.md)
 for the full mode description.
 
 ---

@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.108 - 2026-08-31
+
+- **Les images de l'add-on sont publiées sous l'organisation teleia**
+  (`ghcr.io/teleia/…`) : la propriété du logiciel suit désormais la société,
+  plus un compte personnel. Rien à faire — cette mise à jour se télécharge
+  depuis la nouvelle adresse, les versions précédentes restent servies par
+  l'ancienne.
+
+- **Le port HTTPS local (8443) est déclaré dans le manifeste** de l'add-on.
+  C'est la porte TLS qui donne à un téléphone du même réseau un contexte
+  sécurisé — la condition pour que le navigateur accorde le micro, donc le
+  vocal, sans faire transiter l'audio par le cloud. Inerte tant qu'aucun
+  certificat n'est installé : rien ne s'ouvre, rien n'échoue.
+
+- **Automatisations IA** : une plage nocturne qui franchit minuit est comprise
+  comme une seule nuit, et un déclencheur que le modèle serait tenté
+  d'inventer devient une question posée — jamais une invention silencieuse.
+
+- **Mobile et tableaux de bord** : le bouton « se reconnecter » navigue la
+  fenêtre hôte depuis l'application ; les liens `/local/…` des tableaux de
+  bord échappent au routeur de l'interface au lieu d'afficher une page vide.
+
 ## 2.0.107 - 2026-08-30
 
 - **Le logo du partenaire se télécharge enfin.** L'adresse saisie dans Admin
