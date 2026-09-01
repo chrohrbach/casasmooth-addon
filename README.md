@@ -1,6 +1,6 @@
 # casasmooth Home Assistant Add-on Repository
 
-[![Add to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https://github.com/chrohrbach/casasmooth-addon)
+[![Add to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https://github.com/teleia/casasmooth-addon)
 
 This is the official add-on repository for **casasmooth** – a Smart Home configuration and automation server for Home Assistant.
 
@@ -22,7 +22,7 @@ The production add-on that:
 
 1. Click the button above, or go to  
    **Settings → Add-ons → Add-on store → ⋮ → Repositories**  
-   and add: `https://github.com/chrohrbach/casasmooth-addon`
+   and add: `https://github.com/teleia/casasmooth-addon`
 
 2. Find **casasmooth** in the store and click **Install**.
 
@@ -32,5 +32,5 @@ The production add-on that:
 
 ## Support
 
-- Issues: <https://github.com/chrohrbach/casasmooth-addon/issues>
-- Source: <https://github.com/chrohrbach/casasmooth> (private)
+- Issues: <https://github.com/teleia/casasmooth-addon/issues>
+- Source: <https://github.com/teleia/casasmooth> (private)

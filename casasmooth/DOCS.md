@@ -23,7 +23,7 @@ installation.
 
 1. Add this repository to your Home Assistant:
    **Settings → Add-ons → Add-on store → ⋮ → Repositories**
-   `https://github.com/chrohrbach/casasmooth-addon`
+   `https://github.com/teleia/casasmooth-addon`
 
 2. Find **casasmooth** in the add-on store and click **Install**.
 
@@ -295,5 +295,5 @@ Check the add-on log for Python stack traces. Common causes:
 
 ## Support
 
-- Repository: <https://github.com/chrohrbach/casasmooth-addon>
-- Issues: <https://github.com/chrohrbach/casasmooth-addon/issues>
+- Repository: <https://github.com/teleia/casasmooth-addon>
+- Issues: <https://github.com/teleia/casasmooth-addon/issues>
