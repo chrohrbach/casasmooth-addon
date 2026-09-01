@@ -9,7 +9,7 @@ name: "casasmooth"
 version: "2.0.108"
 slug: casasmooth
 description: "casasmooth Smart Home System"
-url: "https://github.com/chrohrbach/casasmooth-addon"
+url: "https://github.com/teleia/casasmooth-addon"
 
 arch:
   - amd64
