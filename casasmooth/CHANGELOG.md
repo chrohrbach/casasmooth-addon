@@ -1,5 +1,43 @@
 # Changelog
 
+## 2.0.109 - 2026-09-03
+
+- **Sécurité : l'image de l'add-on ne contient plus aucune clé de l'entreprise.**
+  Dix identifiants partagés partaient jusqu'ici sur chaque box, lisibles par
+  qui ouvrait un shell sur son propre matériel. La box les reçoit désormais du
+  cloud, les garde en copie locale entre deux mises à jour, et les rafraîchit
+  d'elle-même (toutes les heures, toutes les cinq minutes s'il en manque). Un
+  redémarrage pendant une indisponibilité du cloud ne coupe donc plus rien.
+  S'y ajoutent des dépendances gelées et une provenance attestée des images.
+
+- **Appareils** : trois correctifs liés à Home Assistant 2026.8/2026.9 — les
+  appareils enfants héritent l'aire de leur parent (leurs entités disparaissaient
+  avant même les règles), un appareil scindé ne compte plus plusieurs fois, et
+  une adresse MAC fictive ne fusionne plus deux appareils distincts.
+
+- **Une box neuve naît complète** : plus aucune section invisible au premier
+  démarrage, et la vue Énergie ne s'ouvre plus repliée.
+
+- **Application mobile** : tuiles riches sur deux colonnes avec feuille de
+  contrôle, marque du partenaire branchée sur le cloud, en-tête allégé en icônes,
+  serrures colorées (vert fermé, rouge ouvert, orange bloqué), présentation de
+  l'accueil déplacée dans les réglages. Un choix d'affichage devenu sans objet
+  ne reste plus appliqué.
+
+- **Corrections** : le seuil d'allumage à la luminosité plafonne à 1000 lx (au
+  lieu de 10 000) et se règle au pas de 5 ; la monnaie suit le profil et se fige
+  à la génération ; les mandataires de confiance sont enfin posés ; un mot de
+  passe long ne verrouille plus en silence ; la sauvegarde inclut les
+  composants personnalisés et sa date ne ment plus.
+
+- **Pilotage énergétique (SGr / §14a)** : le mode de repli tient une durée
+  minimale (plus d'oscillation sur un lien qui clignote), pilotage par contact
+  sec, un ordre du gestionnaire de réseau lie la puissance en temps réel et pas
+  seulement le plan.
+
+- **Ménage** : le logo du partenaire se télécharge et se redimensionne ; la doc
+  API de la box est une page navigable, générée depuis le modèle sémantique.
+
 ## 2.0.108 - 2026-08-31
 
 - **Les images de l'add-on sont publiées sous l'organisation teleia**
@@ -1450,7 +1488,7 @@ plus an MFA reminder on the addon side. No functional change for end users.
   auto-generates a Fernet key on first deploy and persists it to depot
   at `casasmooth-internal/db_fernet_key`.
 - Removed the hard-coded `ADMIN_WEB_PASSWORD` default
-  (`csadmin!0301040105`) from operations-portal + compose — it was
+  (`<valeur retirée le 03.09.2026, SEC-14>`) from operations-portal + compose — it was
   readable from the repo.
 - Verified in prod: 13/13 `systems.remote_token` rows are `enc:v1:` at
   rest, 0 plaintext leftover in `systems.extra_data`.
