@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.0.110 - 2026-09-04
+
+- **Sécurité des comptes invités** : un invité (compte temporaire d'une
+  location, d'un lieu ou de la villa de démonstration) ne peut plus appeler un
+  service Home Assistant arbitraire ni lancer le balayage du réseau. La règle
+  est posée deux fois, dans l'add-on et dans le composant qui relaie le tunnel,
+  et ne touche ni le propriétaire ni le pilotage cloud.
+
+- **Application mobile** : le lien d'invitation (`?guest=`) ouvre l'application
+  sans passer par la page de connexion Home Assistant, y compris par le tunnel ;
+  la connexion invité manuelle par le tunnel est corrigée du même coup.
+
+- **Support par mail** (côté cloud, mais visible par les clients) : une réponse
+  automatique ne part qu'à un client identifié dont la box est active ; un
+  expéditeur inconnu reçoit une courtoisie qui ne confirme rien, et le
+  propriétaire est prévenu à son adresse enregistrée si sa box est nommée ; une
+  automation qui se comporte mal alors que la commande manuelle fonctionne n'est
+  plus classée comme une panne bloquante.
+
+- **Démonstration publique** : la villa casasmoothDemo accueille les visiteurs
+  du site (file d'attente, fenêtre exclusive de dix minutes, remise en état
+  après chaque visite, préférences de l'application comprises).
+
+- **Corrections** : la route publique `/demo` du site ne sert plus les fichiers
+  de construction, et un en-tête Content-Security-Policy minimal protège
+  l'API ; les alertes d'exploitation sont ventilées en canaux séparés.
+
 ## 2.0.109 - 2026-09-03
 
 - **Sécurité : l'image de l'add-on ne contient plus aucune clé de l'entreprise.**
