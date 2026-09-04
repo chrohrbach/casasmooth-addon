@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.111 - 2026-09-04
+
+- **Enregistrement des ambiances lumineuses** : l'automatisme qui photographie
+  l'état des lumières chaque minute ne consigne plus d'erreur au redémarrage de
+  Home Assistant. Il se déclenchait avant que l'identifiant de l'installation ne
+  soit disponible et son appel était refusé — une fois par redémarrage, constaté
+  sur 18 installations. L'enregistrement manqué de cette minute-là est sans
+  conséquence : le suivant a lieu soixante secondes plus tard.
+
+- **Inventaire des appareils** : la recherche d'un appareil par son identifiant
+  échouait systématiquement. Un renommage inachevé avait laissé le corps de la
+  méthode pointer vers une variable qui n'existait plus.
+
+- **Bâtiments** : la box qui pilote les parties communes d'un immeuble se
+  désigne désormais depuis la fiche du bâtiment.
+
+- **Sous le capot** : deux fichiers du générateur employaient une syntaxe
+  réservée à Python 3.12 alors qu'ils voyagent aussi dans des images 3.11 ;
+  ils y étaient inertes, ils ne pouvaient qu'y devenir un défaut. Les journaux
+  des portails ne perdent plus silencieusement une demande de devis.
+
 ## 2.0.110 - 2026-09-04
 
 - **Sécurité des comptes invités** : un invité (compte temporaire d'une
